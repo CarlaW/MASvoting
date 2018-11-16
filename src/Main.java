@@ -6,6 +6,7 @@ public class Main{
 
     private int noVoters;
     private int noOptions;
+    private int output;
 
     private int votingScheme;
     private char[][] preferenceMatrix;
@@ -18,7 +19,7 @@ public class Main{
         });
     }
 
-    public Main(){
+    private Main(){
         initialize();
     }
 
@@ -30,23 +31,25 @@ public class Main{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
-        TVApanel tva = new TVApanel(votingScheme, preferenceMatrix);
-        panel.add(tva);
-
-        frame.add(panel);
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setBounds(0,0, screenSize.width, screenSize.height);
-        frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-        frame.setVisible(true);
+        TVApanel tva = new TVApanel(votingScheme, preferenceMatrix, output);
+        if (output!=0) {
+            panel.add(tva);
+            frame.add(panel);
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            frame.setBounds(0, 0, screenSize.width, screenSize.height);
+            frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+            frame.setVisible(true);
+        }
     }
 
     private void askForSettings(){
         PopupSettings settings = new PopupSettings();
-        int output = JOptionPane.showConfirmDialog(null, settings, "Enter preferences", JOptionPane.OK_CANCEL_OPTION);
-        if (output!=0){
+        int out = JOptionPane.showConfirmDialog(null, settings, "Enter preferences", JOptionPane.OK_CANCEL_OPTION);
+        if (out!=0){
             System.exit(0);
         }
         votingScheme = settings.getVotingScheme().getSelectedIndex();
+        output = settings.getOutput().getSelectedIndex();
         try {
             noVoters = Integer.parseInt(settings.getVoters().getText());
             noOptions = Integer.parseInt(settings.getOptions().getText());
@@ -68,8 +71,8 @@ public class Main{
 
     private void askForPreferenceMatrix(){
         PopupInput input = new PopupInput(noVoters, noOptions);
-        int output = JOptionPane.showConfirmDialog(null, input, "Enter preference matrix", JOptionPane.OK_CANCEL_OPTION);
-        if (output!=0){
+        int out = JOptionPane.showConfirmDialog(null, input, "Enter preference matrix", JOptionPane.OK_CANCEL_OPTION);
+        if (out!=0){
             System.exit(0);
         }
         preferenceMatrix = input.getPreferenceMatrix();

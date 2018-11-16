@@ -11,7 +11,7 @@ public class TVApanel extends JPanel {
     private String[][] stringMatrix;
     private int[] votingVector;
 
-    public TVApanel(int votingScheme, char[][] preferenceMatrix){
+    public TVApanel(int votingScheme, char[][] preferenceMatrix, int output){
         this.preferenceMatrix = preferenceMatrix;
 
         //first, gather data
@@ -22,12 +22,19 @@ public class TVApanel extends JPanel {
         int[] happiness = calculateHappiness(votingOutcome[0]);
         addHappinessToMatrix(happiness);
 
-        //then, display (either GUI or text)
-        //GUI (I think it's easier to debug using this
-        add(displaySchemeInfoInGUI(votingScheme));
-        add(displayMatrixInGUI());
-        //Console
-        displayInConsole(votingScheme);
+        if (output==0){
+            displayInConsole(votingScheme);
+        } else if (output==1){
+            add(displaySchemeInfoInGUI(votingScheme));
+            add(displayMatrixInGUI());
+        } else {
+            //then, display (either GUI or text)
+            //GUI (I think it's easier to debug using this
+            add(displaySchemeInfoInGUI(votingScheme));
+            add(displayMatrixInGUI());
+            //Console
+            displayInConsole(votingScheme);
+        }
 
         /*
         - display preference matrix (done)
