@@ -1,4 +1,8 @@
+package view;
 import javax.swing.*;
+
+import data.PreferenceMatrix;
+
 import java.awt.*;
 
 public class PopupInput extends JPanel {
@@ -16,12 +20,12 @@ public class PopupInput extends JPanel {
 
     private JPanel createInputMatrix(){
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(options+1, voters+1));
+        panel.setLayout(new GridLayout(voters+1,options+1));
 
-        inputMatrix = new JTextField[options][voters];
+        inputMatrix = new JTextField[voters][options];
 
-        for (int i=0; i<options+1; i++){
-            for (int j=0; j<voters+1; j++){
+        for (int i=0; i<voters+1; i++){
+            for (int j=0; j<options+1; j++){
                 if (i==0 &&j==0){
                     JLabel empty = new JLabel();
                     panel.add(empty);
@@ -42,14 +46,15 @@ public class PopupInput extends JPanel {
         return panel;
     }
 
-    public char[][] getPreferenceMatrix(){
-        char[][] preferenceMatrix = new char[options][voters];
+    public PreferenceMatrix getPreferenceMatrix(){
+        char[][] table = new char[options][voters];
+        PreferenceMatrix preferenceMatrix= new PreferenceMatrix(table);
         for (int i=0; i<options; i++){
             for (int j=0; j<voters; j++){
                 if (inputMatrix[i][j].getText().isEmpty()){
-                    preferenceMatrix[i][j] = ' ';
+                    preferenceMatrix.table[j][i] = ' ';
                 } else {
-                    preferenceMatrix[i][j] = inputMatrix[i][j].getText().charAt(0);
+                    preferenceMatrix.table[j][i] = inputMatrix[i][j].getText().charAt(0);
                 }
             }
         }

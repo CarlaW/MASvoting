@@ -1,3 +1,4 @@
+package view;
 import javax.swing.*;
 import java.awt.*;
 
@@ -20,7 +21,7 @@ public class PopupSettings extends JPanel {
 
     private JPanel makeVotingSchemePanel(){
         JPanel panel = new JPanel();
-        String[] schemes = {"Voting for 1 (Plurality)", "Voting for 2", "Anti-plurality (Veto)", "Borda"};
+        String[] schemes = {"Plurality", "Voting For Two", "AntiPlurality", "Borda Voting"};
         schemeList = new JComboBox(schemes);
         schemeList.setSelectedIndex(0);
         panel.add(new JLabel("Voting scheme"));

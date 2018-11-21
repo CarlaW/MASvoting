@@ -1,3 +1,4 @@
+package data;
 public class Pair implements Comparable<Pair> {
 
     public int count;
