@@ -8,24 +8,14 @@ public class StrategicVotingOption {
 	public Pair[] newO;
 	public int[] newH;
 	public String z;
+	public int voterID;
 
-	public StrategicVotingOption(char[] v, Pair[] newO, int[] newH, String z) {
+	public StrategicVotingOption(char[] v, Pair[] newO, int[] newH, String z, int voterID) {
 
 		this.v = v;
 		this.newO = newO;
 		this.newH = newH;
 		this.z = z;
-
-		System.out.println("- - - - - - - ");
-		System.out.println("New tuple!");
-		System.out.println("V is: " + new String(v));
-		System.out.println("New outcome is ....");
-		for (int i = 0; i < newO.length; i++) {
-			System.out.println(newO[i].option + ": " + newO[i].count);
-		}
-		System.out.println("NewH is " + Arrays.toString(newH));
-		System.out.println("Reason is ");
-		System.out.println("- - - - - - - ");
-
+		this.voterID = voterID;
 	}
 }

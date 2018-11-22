@@ -31,19 +31,18 @@ public class TVApanel extends JPanel {
 		this.winner = this.outcome[0];
 		this.overallHappiness = calculateHappiness(winner, truePreferenceMatrix);
 
-		ArrayList<ArrayList<StrategicVotingOption>> result = new ArrayList<ArrayList<StrategicVotingOption>>(
-				numOfVoters);
+        result = new ArrayList<>(numOfVoters);
 
-		// Iterate over voters
-		for (int i = 0; i < numOfVoters; i++) {
-			int happiness = calculateHappiness(winner, truePreferenceMatrix)[i];
-			if (happiness < numOfCandidates - 1) {
-				System.out.println("For agent # " + i);
-				System.out.println("Happiness is: " + happiness + " and Max(happines) is : " + (numOfCandidates - 1));
-				System.out.println();
-				result.add(tryCompromise(i));
-			}
-		}
+        // Iterate over voters
+        for (int i = 0; i < numOfVoters; i++) {
+            int happiness = calculateHappiness(winner, truePreferenceMatrix)[i];
+            if (happiness < numOfCandidates - 1) {
+                System.out.println("For agent # " + (i+1));
+                System.out.println("Happiness is: " + happiness + " and Max(happines) is : " + (numOfCandidates - 1));
+                System.out.println();
+                result.add(tryCompromise(i));
+            }
+        }
 
 		this.preferenceMatrix = transposeMatrix(truePreferenceMatrix);
 		stringMatrix = initMatrix();
@@ -87,7 +86,7 @@ public class TVApanel extends JPanel {
 				Pair[] newOutcome = calculateVotingOutcome(preferenceMatrix);
 				int[] newHappiness = calculateHappiness(newOutcome[0], truePreferenceMatrix);
 				if (newHappiness[voterID] > oldHappiness) {
-					setOfOptions.add(new StrategicVotingOption(newPreference, newOutcome, newHappiness, reasoning));
+					setOfOptions.add(new StrategicVotingOption(newPreference, newOutcome, newHappiness, reasoning, voterID));
 				}
 			}
 		}
@@ -112,7 +111,7 @@ public class TVApanel extends JPanel {
 				Pair[] newOutcome = calculateVotingOutcome(preferenceMatrix);
 				int[] newHappiness = calculateHappiness(newOutcome[0], truePreferenceMatrix);
 				if (newHappiness[voterID] > oldHappiness) {
-					setOfOptions.add(new StrategicVotingOption(newPreference, newOutcome, newHappiness, reasoning));
+					setOfOptions.add(new StrategicVotingOption(newPreference, newOutcome, newHappiness, reasoning, voterID));
 				}
 			}
 		}
@@ -137,7 +136,7 @@ public class TVApanel extends JPanel {
 			Pair[] newOutcome = calculateVotingOutcome(preferenceMatrix);
 			int[] newHappiness = calculateHappiness(newOutcome[0], truePreferenceMatrix);
 			if (newHappiness[voterID] > oldHappiness) {
-				setOfOptions.add(new StrategicVotingOption(newPreference, newOutcome, newHappiness, reasoning));
+				setOfOptions.add(new StrategicVotingOption(newPreference, newOutcome, newHappiness, reasoning, voterID));
 			}
 		}
 
@@ -270,34 +269,52 @@ public class TVApanel extends JPanel {
 		return panel;
 	}
 
-	private void displayInConsole(int votingScheme) {
-		String current = "Current voting scheme: " + schemes[votingScheme];
-		String v = "{";
-		for (int i = 0; i < votingVector.length; i++) {
-			v = v + votingVector[i];
-		}
-		v = v + "}";
-		String vector = "Respective vector: " + v;
-		System.out.println(current);
-		System.out.println(vector);
-		System.out.println();
+    private void displayInConsole(int votingScheme) {
+        String current = "Current voting scheme: " + schemes[votingScheme];
+        String v = "{";
+        for (int i = 0; i < votingVector.length; i++) {
+            v = v + votingVector[i];
+        }
+        v = v + "}";
+        String vector = "Respective vector: " + v;
+        System.out.println(current);
+        System.out.println(vector);
+        System.out.println();
 
-		String format = "%-25s";
-		for (int i = 0; i < preferenceMatrix[0].length; i++) {
-			format += "%-11s";
-		}
-		format += "%30s\n";
+        String format = "%-25s";
+        for (int i = 0; i < preferenceMatrix[0].length; i++) {
+            format += "%-11s";
+        }
+        format += "%30s\n";
 
-		String separator = "";
-		for (int i = 0; i < (11 * preferenceMatrix[0].length + 35); i++) {
-			separator += "-";
-		}
+        String separator = "";
+        for (int i = 0; i < (11 * stringMatrix[0].length + 35); i++) {
+            separator += "-";
+        }
 
-		for (String[] row : stringMatrix) {
-			System.out.format(format, row);
-			System.out.println(separator);
-		}
-	}
+        for (String[] row : stringMatrix) {
+            System.out.format(format, row);
+            System.out.println(separator);
+        }
+
+        format = "%-25s%25s\n";
+        System.out.println();
+        for (int i=0; i<result.size(); i++){
+            for (int j=0; j<result.get(i).size(); j++){
+                System.out.println();
+                StrategicVotingOption s = result.get(i).get(j);
+                System.out.println("Strategic voting option # " + (j+1) + " for voter # " + (s.voterID+1) + ":");
+                System.out.format(format, "v", "newO");
+                System.out.println("---------------------------------------------------");
+                for (int k=0; k<s.v.length; k++) {
+                    System.out.format(format, String.valueOf(s.v[k]), String.valueOf(s.newO[k].option) + ": " + Integer.toString(s.newO[k].count));
+                }
+                System.out.println("---------------------------------------------------");
+                System.out.println("H: " + Integer.toString(IntStream.of(s.newH).sum()));
+                System.out.println("z: " + s.z);
+            }
+        }
+    }
 
 	private JPanel displayMatrixInGUI() {
 		JPanel panel = new JPanel();
@@ -313,6 +330,7 @@ public class TVApanel extends JPanel {
 		return panel;
 	}
 
+    private ArrayList<ArrayList<StrategicVotingOption>> result;
 	private final String[] schemes = { "Voting for 1 (Plurality)", "Voting for 2", "Anti-plurality (Veto)", "Borda" };
 	private char[][] preferenceMatrix, truePreferenceMatrix;
 	private String[][] stringMatrix;

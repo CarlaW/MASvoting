@@ -2,6 +2,7 @@ package data;
 
 import javax.swing.*;
 import java.awt.*;
+import static data.Helper.transposeMatrix;
 import java.util.ArrayList;
 
 public class Main {
@@ -27,8 +28,8 @@ public class Main {
 
 	private void initialize() {
 		askForSettings();
-//		askForPreferenceMatrix();
-		askForRandomPreferenceMatrix();
+		askForPreferenceMatrix();
+	//	askForRandomPreferenceMatrix();
 
 		JFrame frame = new JFrame("Tactical Voting Analyst");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -93,6 +94,7 @@ public class Main {
 			JOptionPane.showMessageDialog(null, "A voter must have a first preference.");
 			askForPreferenceMatrix();
 		}
+		preferenceMatrix = transposeMatrix(preferenceMatrix);
 	}
 
 	private boolean doubleVotePerVoter() {

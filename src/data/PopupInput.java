@@ -18,8 +18,8 @@ public class PopupInput extends JPanel {
 	public PopupInput(int voters, int options) {
 		this.voters = voters;
 		this.options = options;
-//		JPanel inputMatrix = createInputMatrix();
-//		add(inputMatrix);
+		JPanel inputMatrix = createInputMatrix();
+		add(inputMatrix);
 	}
 
 	private JPanel createInputMatrix() {
