@@ -16,7 +16,7 @@ public class StrategicVoting {
 		this.votingScheme = scheme;
 		this.preferenceMatrix = preferenceMatrix;
 		this.outcome = calculateVotingOutcome();
-		this.winner  = outcome[0];
+		this.winner = outcome[0];
 		this.voterID = voterID;
 		this.truePreference = preferenceMatrix[voterID];
 		this.oldHappiness = calculateHappiness(winner)[voterID];
@@ -39,7 +39,7 @@ public class StrategicVoting {
 				char[] newPreference = swap(truePreference[j], truePreference[i]);
 				preferenceMatrix[voterID] = newPreference; // Put new Voting Vector in preference matrix
 				Pair[] outcome = calculateVotingOutcome();
-				newHappiness = calculateHappiness(outcome[0])[voterID];
+				newHappiness = calculateThisHappiness(outcome[0]);
 
 				if (shouldManipulate()) {
 					addNewOption(newPreference, outcome, newHappiness, reasoning);
@@ -67,7 +67,7 @@ public class StrategicVoting {
 				char[] newPreference = swap(truePreference[j], truePreference[i]);
 				preferenceMatrix[voterID] = newPreference; // Put new Voting Vector in preference matrix
 				Pair[] outcome = calculateVotingOutcome();
-				newHappiness = calculateHappiness(outcome[0])[voterID];
+				newHappiness = calculateThisHappiness(outcome[0]);
 
 				if (shouldManipulate()) {
 					addNewOption(newPreference, outcome, newHappiness, reasoning);
@@ -94,7 +94,7 @@ public class StrategicVoting {
 			char[] newPreference = leaveOneCandidate(truePreference[i]);
 			preferenceMatrix[voterID] = newPreference; // Put new Voting Vector in preference matrix
 			Pair[] outcome = calculateVotingOutcome();
-			newHappiness = calculateHappiness(outcome[0])[voterID];
+			newHappiness = calculateThisHappiness(outcome[0]);
 
 			if (shouldManipulate()) {
 				addNewOption(newPreference, outcome, newHappiness, reasoning);
@@ -123,7 +123,7 @@ public class StrategicVoting {
 	public int calculateThisHappiness(Pair winner) {
 		int happiness = 0;
 		for (int j = 0; j < numOfCandidates; j++) { // respective preferences
-			if (preferenceMatrix[voterID][j] == winner.option) { //
+			if (truePreference[j] == winner.option) { //
 				happiness = numOfCandidates - j - 1;
 			}
 		}

@@ -1,5 +1,7 @@
 package data;
 
+import java.util.Arrays;
+
 public class StrategicVotingOption {
 
 	public char[] v;
@@ -14,13 +16,16 @@ public class StrategicVotingOption {
 		this.newH = newH;
 		this.z = z;
 
-//		System.out.println("V is: " + v);
-//		System.out.println("New outcome is");
-//		for (int i = 0; i < newO.length; i++) {
-//			System.out.println(newO[i].count + ": " + newO[i].count);
-//		}
-//		System.out.println("NewH is " + newH);
-//		System.out.println("Reason is ");
+		System.out.println("- - - - - - - ");
+		System.out.println("New tuple!");
+		System.out.println("V is: " + new String(v));
+		System.out.println("New outcome is ....");
+		for (int i = 0; i < newO.length; i++) {
+			System.out.println(newO[i].option + ": " + newO[i].count);
+		}
+		System.out.println("NewH is " + newH);
+		System.out.println("Reason is ");
+		System.out.println("- - - - - - - ");
 
 	}
 }

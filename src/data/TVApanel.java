@@ -47,6 +47,7 @@ public class TVApanel extends JPanel {
 				System.out.println("Happiness is: " + happiness + " and Max(happines) is : " + (numOfCandidates - 1));
 				System.out.println();
 				strategicVoting.tryCompromise();
+				
 
 			}
 		}
