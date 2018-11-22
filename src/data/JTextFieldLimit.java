@@ -1,8 +1,9 @@
+package data;
 import javax.swing.text.*;
 
 public class JTextFieldLimit extends PlainDocument {
 
-    private final char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+    public static final char[] ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
     private int limit;
     private String options = "";
 
@@ -10,7 +11,7 @@ public class JTextFieldLimit extends PlainDocument {
         super();
         this.limit = limit;
         for (int i=0; i<noOptions; i++){
-            options = options + alphabet[i];
+            options = options + ALPHABET[i];
         }
     }
 
