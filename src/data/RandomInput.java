@@ -9,6 +9,7 @@ public class RandomInput {
 
 	private int voters;
 	private int options;
+	
 
 	public RandomInput(int voters, int options) {
 		this.voters = voters;

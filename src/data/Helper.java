@@ -21,13 +21,11 @@ public class Helper {
 	}
 
 	public static char[][] transposeMatrix(char[][] arr) {
-
 		int height = arr.length;
 		int width = arr[0].length;
 		char[][] res = new char[width][height];
 		for (int x = 0; x < height; x++) {
 			for (int y = 0; y < width; y++) {
-
 				res[y][x] = arr[x][y];
 			}
 		}
