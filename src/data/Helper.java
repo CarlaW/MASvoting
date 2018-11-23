@@ -31,6 +31,16 @@ public class Helper {
 		return res;
 	}
 
+	public static int getIndexOf(Pair[] outcome, char key) {
+		int res = 0;
+		for (int i = 0; i < outcome.length; i++) {
+			if (outcome[i].option == key) {
+				return i;
+			}
+		}
+		return res;
+	}
+
 	public static char[][] transposeMatrix(char[][] arr) {
 		int height = arr.length;
 		int width = arr[0].length;
