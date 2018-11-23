@@ -23,6 +23,7 @@ public class TVA {
 		this.oldOutcome = calculateVotingOutcome(truePreferenceMatrix);
 		this.winner = this.oldOutcome[0];
 		this.overallHappiness = calculateHappiness(winner, truePreferenceMatrix);
+		System.out.println(scheme.name);
 
         result = new ArrayList<>(numOfVoters);
 
@@ -54,12 +55,11 @@ public class TVA {
 		int[] happiness = calculateHappiness(winner, truePreferenceMatrix);
 		addHappinessToMatrix(happiness);
 
-
 		displayInConsole(votingScheme);
 	}
 
 	private boolean shouldManipulate(char trueFavorite, Pair[] oldOutcome, Pair[] newOutcome, int oldHappiness,
-									int newHappiness) {
+			int newHappiness) {
 		if (newHappiness > oldHappiness) {
 			return true;
 		} else if (newHappiness == oldHappiness) {
@@ -99,7 +99,7 @@ public class TVA {
 	 * 
 	 */
 	public ArrayList<StrategicVotingOption> tryCompromise(int voterID) {
-		char[] truePreference = preferenceMatrix[voterID];
+		char[] truePreference = truePreferenceMatrix[voterID];
 		int oldHappiness = overallHappiness[voterID];
 		ArrayList<StrategicVotingOption> setOfOptions = new ArrayList<StrategicVotingOption>();
 		for (int i = 1; i < numOfCandidates; i++) {
@@ -110,12 +110,14 @@ public class TVA {
 				Pair[] newOutcome = calculateVotingOutcome(preferenceMatrix);
 				int[] newHappiness = calculateHappiness(newOutcome[0], truePreferenceMatrix);
 				if (shouldManipulate(truePreference[0], oldOutcome, newOutcome, oldHappiness, newHappiness[voterID])) {
-					String reasoning = reasoningString(truePreference[0], oldOutcome, newOutcome, oldHappiness, newHappiness, voterID, "compromising", i, j);
-					setOfOptions.add(new StrategicVotingOption(newPreference, newOutcome, newHappiness, reasoning, voterID));
-					preferenceMatrix[voterID] = truePreference;
+					String reasoning = reasoningString(truePreference[0], oldOutcome, newOutcome, oldHappiness,
+							newHappiness, voterID, "compromising", i, j);
+					setOfOptions.add(
+							new StrategicVotingOption(newPreference, newOutcome, newHappiness, reasoning, voterID));
 				}
 			}
 		}
+		preferenceMatrix[voterID] = truePreference;
 		return setOfOptions;
 	}
 
@@ -125,7 +127,7 @@ public class TVA {
 	 * 
 	 */
 	public ArrayList<StrategicVotingOption> tryBury(int voterID) {
-		char[] truePreference = preferenceMatrix[voterID];
+		char[] truePreference = truePreferenceMatrix[voterID];
 		int oldHappiness = overallHappiness[voterID];
 		ArrayList<StrategicVotingOption> setOfOptions = new ArrayList<StrategicVotingOption>();
 		for (int i = 1; i < numOfCandidates; i++) {
@@ -135,13 +137,14 @@ public class TVA {
 				Pair[] newOutcome = calculateVotingOutcome(preferenceMatrix);
 				int[] newHappiness = calculateHappiness(newOutcome[0], truePreferenceMatrix);
 				if (shouldManipulate(truePreference[0], oldOutcome, newOutcome, oldHappiness, newHappiness[voterID])) {
-					String reasoning = reasoningString(truePreference[0], oldOutcome, newOutcome, oldHappiness, newHappiness, voterID, "burying", i, j);
-					setOfOptions.add(new StrategicVotingOption(newPreference, newOutcome, newHappiness, reasoning, voterID));
-					preferenceMatrix[voterID] = truePreference;
+					String reasoning = reasoningString(truePreference[0], oldOutcome, newOutcome, oldHappiness,
+							newHappiness, voterID, "burying", i, j);
+					setOfOptions.add(
+							new StrategicVotingOption(newPreference, newOutcome, newHappiness, reasoning, voterID));
 				}
 			}
 		}
-
+		preferenceMatrix[voterID] = truePreference;
 		return setOfOptions;
 	}
 
@@ -151,7 +154,7 @@ public class TVA {
 	 * 
 	 */
 	public ArrayList<StrategicVotingOption> tryBulletVoting(int voterID) {
-		char[] truePreference = preferenceMatrix[voterID];
+		char[] truePreference = truePreferenceMatrix[voterID];
 		int oldHappiness = overallHappiness[voterID];
 		ArrayList<StrategicVotingOption> setOfOptions = new ArrayList<StrategicVotingOption>();
 		for (int i = 0; i < numOfCandidates; i++) {
@@ -160,12 +163,13 @@ public class TVA {
 			Pair[] newOutcome = calculateVotingOutcome(preferenceMatrix);
 			int[] newHappiness = calculateHappiness(newOutcome[0], truePreferenceMatrix);
 			if (shouldManipulate(truePreference[0], oldOutcome, newOutcome, oldHappiness, newHappiness[voterID])) {
-				String reasoning = reasoningString(truePreference[0], oldOutcome, newOutcome, oldHappiness, newHappiness, voterID, "bullet voting", i, -1);
-				setOfOptions.add(new StrategicVotingOption(newPreference, newOutcome, newHappiness, reasoning, voterID));
-				preferenceMatrix[voterID] = truePreference;
+				String reasoning = reasoningString(truePreference[0], oldOutcome, newOutcome, oldHappiness,
+						newHappiness, voterID, "bullet voting", i, -1);
+				setOfOptions
+						.add(new StrategicVotingOption(newPreference, newOutcome, newHappiness, reasoning, voterID));
 			}
 		}
-
+		preferenceMatrix[voterID] = truePreference;
 		return setOfOptions;
 	}
 

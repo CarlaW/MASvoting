@@ -57,13 +57,13 @@ public class Helper {
 		VotingScheme res = null;
 		switch (ID) {
 		case 0:
-			res = VotingScheme.Plurality;
+			return res = VotingScheme.Plurality;
 		case 1:
-			res = VotingScheme.VotingForTwo;
+			return res = VotingScheme.VotingForTwo;
 		case 2:
-			res = VotingScheme.AntiPlurality;
+			return res = VotingScheme.AntiPlurality;
 		case 3:
-			res = VotingScheme.BordaVoting;
+			return res = VotingScheme.BordaVoting;
 		}
 		return res;
 	}
