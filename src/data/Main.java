@@ -32,14 +32,9 @@ public class Main {
 	private void initialize() {
 		askForSettings();
 	//	preferenceMatrix = transposeMatrix(getTestMatrix());
-	//	askForPreferenceMatrix();
-		askForRandomPreferenceMatrix();
+		askForPreferenceMatrix();
+	//	askForRandomPreferenceMatrix();
 
-		JFrame frame = new JFrame("Tactical Voting Analyst");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		JPanel panel = new JPanel();
-	
 		TVA tva = new TVA(votingScheme, preferenceMatrix);
 	}
 
