@@ -23,7 +23,6 @@ public class TVA {
 		this.oldOutcome = calculateVotingOutcome(truePreferenceMatrix);
 		this.winner = this.oldOutcome[0];
 		this.overallHappiness = calculateHappiness(winner, truePreferenceMatrix);
-		System.out.println(scheme.name);
 
         result = new ArrayList<>(numOfVoters);
 
@@ -54,7 +53,6 @@ public class TVA {
 		addVotingOutcomeToMatrix(this.oldOutcome);
 		int[] happiness = calculateHappiness(winner, truePreferenceMatrix);
 		addHappinessToMatrix(happiness);
-
 		displayInConsole(votingScheme);
 	}
 
@@ -378,28 +376,6 @@ public class TVA {
             }
 
         }
-
-
-
-
-
-       /* format = "%-25s%25s\n";
-        System.out.println();
-        for (int i=0; i<result.size(); i++){
-            for (int j=0; j<result.get(i).size(); j++){
-                System.out.println();
-                StrategicVotingOption s = result.get(i).get(j);
-                System.out.println("Strategic voting option # " + (i+1) + " for voter # " + (s.voterID+1) + ":");
-                System.out.format(format, "v", "newO");
-                System.out.println("---------------------------------------------------");
-                for (int k=0; k<s.v.length; k++) {
-                    System.out.format(format, String.valueOf(s.v[k]), String.valueOf(s.newO[k].option) + ": " + Integer.toString(s.newO[k].count));
-                }
-                System.out.println("---------------------------------------------------");
-                System.out.println("H: " + Integer.toString(IntStream.of(s.newH).sum()));
-                System.out.println("z: " + s.z);
-            }
-        }*/
     }
 
     private ArrayList<ArrayList<StrategicVotingOption>> result;
