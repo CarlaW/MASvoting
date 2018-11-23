@@ -276,7 +276,7 @@ public class TVA {
         format += "%30s\n";
 
         String separator = "";
-        for (int i = 0; i < (11 * stringMatrix[0].length + 35); i++) {
+        for (int i = 0; i < (11 * stringMatrix[0].length + 45); i++) {
             separator += "-";
         }
 
