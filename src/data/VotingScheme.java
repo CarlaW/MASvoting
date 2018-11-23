@@ -5,7 +5,7 @@ import java.util.Collections;
 
 public enum VotingScheme {
 
-	Plurality(1, "Plurality"), VotingForTwo(2, "Voting For Two"), AntiPlurality(3, "AntiPlurality"),
+	Plurality(1, "Plurality"), VotingForTwo(2, "Voting For Two"), AntiPlurality(3, "Anti-Plurality"),
 	BordaVoting(4, "Borda Voting");
 	
 	VotingScheme(int ID, String name) {
