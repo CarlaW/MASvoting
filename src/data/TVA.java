@@ -257,6 +257,7 @@ public class TVA {
 	}
 
     private void displayInConsole(int votingScheme) {
+        System.out.println();
         String current = "Current voting scheme: " + schemes[votingScheme];
         String v = "{";
         for (int i = 0; i < votingVector.length; i++) {
@@ -284,27 +285,25 @@ public class TVA {
             System.out.println(separator);
         }
         System.out.println();
-        System.out.println("result.size() = " + result.size());
-        
-        for (int i=0; i<result.size(); i++){
-            System.out.println("i = " + i);
-            System.out.println("size: " + result.get(i).size());
-            for (int j=0; j<result.get(i).size(); j++){
-                System.out.println("j = " + j);
-                System.out.println(result.get(i).get(j).voterID);
-                //System.out.println("i + j:  " + i + " " + j);
-                //System.out.println(result.get(i).size());
-                //System.out.println(result.get(i).get(j).voterID);
-            }
-            System.out.println();
-        }
-        System.out.println();
+        System.out.println("Tactical voting strategies:");
+//        for (int i=0; i<result.size(); i++){
+//            System.out.println("i = " + i);
+//            System.out.println("size: " + result.get(i).size());
+//            for (int j=0; j<result.get(i).size(); j++){
+//                System.out.println("j = " + j);
+//                System.out.println(result.get(i).get(j).voterID);
+//            }
+//            System.out.println();
+//        }
+//        System.out.println();
 
         for (int g=0; g<result.size(); g++){ //each voters strategic option
-            System.out.println("g = " + g);
+            //System.out.println("g = " + g);
+            System.out.println("Voter # " + (g+1) + " has " + result.get(g).size() + " strategic voting options");
             for (int h=0; h<result.get(g).size(); h++) {
-                System.out.println("h = " + h);
+                //System.out.println("h = " + h);
                 if (result.get(g).size()!=0){
+
                     String[][] newStringMatrix = makeDeepCopy(stringMatrix);
                     newStringMatrix[newStringMatrix.length-1][0] += " ->  H = " + IntStream.of(result.get(g).get(h).newH).sum();
                     for (int i = 1; i < newStringMatrix[0].length; i++) {
@@ -331,8 +330,10 @@ public class TVA {
                             System.out.format(format, row);
                             System.out.println(separator);
                         }
-                        System.out.println();
                     }
+                    System.out.println("Reasoning (z) is: ");
+                    System.out.println(result.get(g).get(h).z);
+                    System.out.println();
                 }
             }
 
