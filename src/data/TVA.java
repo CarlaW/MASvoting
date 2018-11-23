@@ -109,6 +109,7 @@ public class TVA {
 				if (shouldManipulate(truePreference[0], oldOutcome, newOutcome, oldHappiness, newHappiness[voterID])) {
 					String reasoning = reasoningString(truePreference[0], oldOutcome, newOutcome, oldHappiness, newHappiness, voterID, "compromising");
 					setOfOptions.add(new StrategicVotingOption(newPreference, newOutcome, newHappiness, reasoning, voterID));
+					preferenceMatrix[voterID] = truePreference;
 				}
 			}
 		}
@@ -133,6 +134,7 @@ public class TVA {
 				if (shouldManipulate(truePreference[0], oldOutcome, newOutcome, oldHappiness, newHappiness[voterID])) {
 					String reasoning = reasoningString(truePreference[0], oldOutcome, newOutcome, oldHappiness, newHappiness, voterID, "burying");
 					setOfOptions.add(new StrategicVotingOption(newPreference, newOutcome, newHappiness, reasoning, voterID));
+					preferenceMatrix[voterID] = truePreference;
 				}
 			}
 		}
@@ -157,6 +159,7 @@ public class TVA {
 			if (shouldManipulate(truePreference[0], oldOutcome, newOutcome, oldHappiness, newHappiness[voterID])) {
 				String reasoning = reasoningString(truePreference[0], oldOutcome, newOutcome, oldHappiness, newHappiness, voterID, "bullet voting");
 				setOfOptions.add(new StrategicVotingOption(newPreference, newOutcome, newHappiness, reasoning, voterID));
+				preferenceMatrix[voterID] = truePreference;
 			}
 		}
 
