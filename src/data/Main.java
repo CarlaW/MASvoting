@@ -1,25 +1,19 @@
 package data;
 
 import javax.swing.*;
-import java.awt.*;
+
 import static data.Helper.transposeMatrix;
-import java.util.ArrayList;
 
 public class Main {
 
 	private int noVoters;
 	private int noOptions;
-	private int output;
 
 	private int votingScheme;
 	private char[][] preferenceMatrix;
 
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				new Main();
-			}
-		});
+		new Main();
 	}
 
 	private Main() {
@@ -45,15 +39,7 @@ public class Main {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JPanel panel = new JPanel();
-		TVApanel tva = new TVApanel(votingScheme, preferenceMatrix, output);
-		if (output != 0) {
-			panel.add(tva);
-			frame.add(panel);
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			frame.setBounds(0, 0, screenSize.width, screenSize.height);
-			frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-			frame.setVisible(true);
-		}
+		TVA tva = new TVA(votingScheme, preferenceMatrix);
 	}
 
 	private void askForSettings() {
@@ -63,7 +49,6 @@ public class Main {
 			System.exit(0);
 		}
 		votingScheme = settings.getVotingScheme().getSelectedIndex();
-		output = settings.getOutput().getSelectedIndex();
 		try {
 			noVoters = Integer.parseInt(settings.getVoters().getText());
 			noOptions = Integer.parseInt(settings.getOptions().getText());

@@ -13,9 +13,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-public class TVApanel extends JPanel {
+public class TVA {
 
-	public TVApanel(int votingScheme, char[][] preferenceMatrix, int output) {
+	public TVA(int votingScheme, char[][] preferenceMatrix) {
 
 		/*
 		 * First transpose the preference matrix and create VotingScheme enum and assign
@@ -66,20 +66,7 @@ public class TVApanel extends JPanel {
 		int[] happiness = calculateHappiness(winner, truePreferenceMatrix);
 		addHappinessToMatrix(happiness);
 
-		if (output == 0) {
-			displayInConsole(votingScheme);
-		} else if (output == 1) {
-			add(displaySchemeInfoInGUI(votingScheme));
-			add(displayMatrixInGUI());
-		} else {
-			// then, display (either GUI or text)
-			// GUI (I think it's easier to debug using this
-			add(displaySchemeInfoInGUI(votingScheme));
-			add(displayMatrixInGUI());
-			// Console
-			displayInConsole(votingScheme);
-		}
-
+		displayInConsole(votingScheme);
 	}
 
 	/*
@@ -269,21 +256,6 @@ public class TVApanel extends JPanel {
 		stringMatrix[(stringMatrix.length - 1)][0] = "Voter happiness H = " + IntStream.of(happiness).sum();
 	}
 
-	private JPanel displaySchemeInfoInGUI(int votingScheme) {
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(2, 1));
-		JLabel label1 = new JLabel("Current voting scheme: " + schemes[votingScheme]);
-		String v = "{";
-		for (int i = 0; i < votingVector.length; i++) {
-			v = v + votingVector[i];
-		}
-		v = v + "}";
-		JLabel label2 = new JLabel("Respective vector: " + v);
-		panel.add(label1);
-		panel.add(label2);
-		return panel;
-	}
-
     private void displayInConsole(int votingScheme) {
         String current = "Current voting scheme: " + schemes[votingScheme];
         String v = "{";
@@ -388,20 +360,6 @@ public class TVApanel extends JPanel {
             }
         }
     }
-
-	private JPanel displayMatrixInGUI() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(stringMatrix.length, stringMatrix[0].length, 1, 1));
-
-		for (int i = 0; i < stringMatrix.length; i++) {
-			for (int j = 0; j < stringMatrix[0].length; j++) {
-				JLabel label = new JLabel(stringMatrix[i][j], SwingConstants.CENTER);
-				label.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-				panel.add(label);
-			}
-		}
-		return panel;
-	}
 
     private ArrayList<ArrayList<StrategicVotingOption>> result;
 	private final String[] schemes = { "Voting for 1 (Plurality)", "Voting for 2", "Anti-plurality (Veto)", "Borda" };

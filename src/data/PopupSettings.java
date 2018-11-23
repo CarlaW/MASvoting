@@ -7,16 +7,13 @@ public class PopupSettings extends JPanel {
     private JComboBox schemeList;
     private JTextField voters;
     private JTextField options;
-    private JComboBox output;
 
     public PopupSettings(){
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         JPanel votingScheme = makeVotingSchemePanel();
         JPanel matrixSize = makeMatrixSizePanel();
-        JPanel outputStyle = makeOutputStylePanel();
         add(votingScheme);
         add(matrixSize);
-        add(outputStyle);
     }
 
     private JPanel makeVotingSchemePanel(){
@@ -42,16 +39,6 @@ public class PopupSettings extends JPanel {
         return panel;
     }
 
-    private JPanel makeOutputStylePanel(){
-        JPanel panel = new JPanel();
-        String[] styles = {"Console", "GUI", "Console + GUI"};
-        output = new JComboBox(styles);
-        output.setSelectedIndex(0);
-        panel.add(new JLabel("Select the way the output is displayed"));
-        panel.add(output);
-        return panel;
-    }
-
     public JComboBox getVotingScheme(){
         return schemeList;
     }
@@ -62,9 +49,5 @@ public class PopupSettings extends JPanel {
 
     public JTextField getOptions(){
         return options;
-    }
-
-    public JComboBox getOutput() {
-        return output;
     }
 }
