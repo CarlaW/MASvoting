@@ -1,7 +1,6 @@
 package data;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 
 public enum VotingScheme {
 
@@ -30,7 +29,10 @@ public enum VotingScheme {
 
 	public int[] AntiPluralityScore(int numOfCandidates) {
 		int[] res = new int[numOfCandidates];
-		res[numOfCandidates - 1] = 1;
+		for (int i = 0; i < numOfCandidates - 1; i++) {
+			res[i] = 1;
+		}
+		res[numOfCandidates - 1] = 0;
 		return res;
 	}
 
