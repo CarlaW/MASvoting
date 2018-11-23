@@ -7,7 +7,7 @@ public enum VotingScheme {
 
 	Plurality(0, "Plurality"), VotingForTwo(1, "Voting For Two"), AntiPlurality(2, "AntiPlurality"),
 	BordaVoting(3, "Borda Voting");
-	
+
 	VotingScheme(int ID, String name) {
 
 		this.ID = ID;
@@ -30,7 +30,7 @@ public enum VotingScheme {
 
 	public int[] AntiPluralityScore(int numOfCandidates) {
 		int[] res = new int[numOfCandidates];
-		res[numOfCandidates] = 1;
+		res[numOfCandidates - 1] = 1;
 		return res;
 	}
 
@@ -45,19 +45,18 @@ public enum VotingScheme {
 	public int[] getScore(int numOfCandidates) {
 		int[] res = new int[numOfCandidates];
 		switch (this.ID) {
+		case 0:
+			return res = PluralityScore(numOfCandidates);
 		case 1:
-			res = PluralityScore(numOfCandidates);
+			return res = VotingForTwoScore(numOfCandidates);
 		case 2:
-			res = VotingForTwoScore(numOfCandidates);
+			return res = AntiPluralityScore(numOfCandidates);
 		case 3:
-			res = AntiPluralityScore(numOfCandidates);
-		case 4:
-			res = BordaVotingScore(numOfCandidates);
+			return res = BordaVotingScore(numOfCandidates);
 		}
 
 		return res;
 	}
-	
 
 	public int ID;
 	public String name;

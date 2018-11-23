@@ -23,6 +23,7 @@ public class TVA {
 		this.oldOutcome = calculateVotingOutcome(truePreferenceMatrix);
 		this.winner = this.oldOutcome[0];
 		this.overallHappiness = calculateHappiness(winner, truePreferenceMatrix);
+		System.out.println(scheme.name);
 
 		result = new ArrayList<>(numOfVoters);
 
@@ -75,8 +76,6 @@ public class TVA {
 		String reason = " ";
 		voterID += 1;
 		for (int j = 0; j < numOfCandidates; j++) {
-			int oldPlace = getIndexOf(oldOutcome, trueFavorite);
-			int newPlace = getIndexOf(newOutcome, trueFavorite);
 			if (newHapp[voterID - 1] > oldHapp) {
 				if (trueFavorite == newOutcome[0].option) {
 					reason = "Using " + method + ", voter # " + voterID
