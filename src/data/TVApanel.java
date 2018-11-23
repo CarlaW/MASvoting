@@ -35,14 +35,27 @@ public class TVApanel extends JPanel {
 
         // Iterate over voters
         for (int i = 0; i < numOfVoters; i++) {
+            result.add(new ArrayList<>());
             int happiness = calculateHappiness(winner, truePreferenceMatrix)[i];
             if (happiness < numOfCandidates - 1) {
+                System.out.println();
                 System.out.println("For agent # " + (i+1));
                 System.out.println("Happiness is: " + happiness + " and Max(happines) is : " + (numOfCandidates - 1));
-                System.out.println();
-                result.add(tryCompromise(i));
-                result.add(tryBury(i));
-                result.add(tryBulletVoting(i));
+                ArrayList<StrategicVotingOption> comp = tryCompromise(i);
+                if (!(comp.isEmpty())) {
+                    System.out.println("Compromise");
+                    result.get(i).addAll(comp);
+                }
+                ArrayList<StrategicVotingOption> bury = tryBury(i);
+                if (!(bury.isEmpty())) {
+                    System.out.println("Burying");
+                    result.get(i).addAll(bury);
+                }
+                ArrayList<StrategicVotingOption> bull = tryBulletVoting(i);
+                if (!(bull.isEmpty())) {
+                    System.out.println("Bullet");
+                    result.get(i).addAll(bull);
+                }
             }
         }
 
@@ -283,7 +296,7 @@ public class TVApanel extends JPanel {
         System.out.println(vector);
         System.out.println();
 
-        String format = "%-25s";
+        String format = "%-35s";
         for (int i = 0; i < preferenceMatrix[0].length; i++) {
             format += "%-11s";
         }
@@ -298,6 +311,64 @@ public class TVApanel extends JPanel {
             System.out.format(format, row);
             System.out.println(separator);
         }
+        System.out.println();
+        System.out.println("result.size() = " + result.size());
+        
+        for (int i=0; i<result.size(); i++){
+            System.out.println("i = " + i);
+            System.out.println("size: " + result.get(i).size());
+            for (int j=0; j<result.get(i).size(); j++){
+                System.out.println("j = " + j);
+                System.out.println(result.get(i).get(j).voterID);
+                //System.out.println("i + j:  " + i + " " + j);
+                //System.out.println(result.get(i).size());
+                //System.out.println(result.get(i).get(j).voterID);
+            }
+            System.out.println();
+        }
+        System.out.println();
+
+        for (int g=0; g<result.size(); g++){ //each voters strategic option
+            System.out.println("g = " + g);
+            for (int h=0; h<result.get(g).size(); h++) {
+                System.out.println("h = " + h);
+                if (result.get(g).size()!=0){
+                    String[][] newStringMatrix = makeDeepCopy(stringMatrix);
+                    newStringMatrix[newStringMatrix.length-1][0] += " ->  H = " + IntStream.of(result.get(g).get(h).newH).sum();
+                    for (int i = 1; i < newStringMatrix[0].length; i++) {
+                        for (int j = 1; j < newStringMatrix.length; j++) {
+                            if ((g + 1) == i) {
+                                if (j!=newStringMatrix.length-1) {
+                                    //System.out.println("result.get(g).get(h).v.length = " + result.get(g).get(h).v.length);
+                                    //System.out.println("j = " + j);
+                                    //for (int k=0; k<result.get(h).get(g).)
+                                    newStringMatrix[j][i] += " -> " + result.get(g).get(h).v[j-1];
+                                } else {
+                                    newStringMatrix[j][i] += " -> " + result.get(g).get(h).newH[g];
+                                }
+                            } else if(i==stringMatrix[0].length-1){
+                                if (j!=newStringMatrix.length-1) {
+                                    newStringMatrix[j][i] += " -> " + result.get(g).get(h).newO[j-1].option + ": " + result.get(g).get(h).newO[j-1].count;
+                                }
+                            }
+                            //System.out.println(stringMatrix[j][i]);
+                        }
+                    }
+                    if (result.get(g).size()!=0) {
+                        for (String[] row : newStringMatrix) {
+                            System.out.format(format, row);
+                            System.out.println(separator);
+                        }
+                        System.out.println();
+                    }
+                }
+            }
+
+        }
+
+
+
+
 
         format = "%-25s%25s\n";
         System.out.println();
@@ -305,7 +376,7 @@ public class TVApanel extends JPanel {
             for (int j=0; j<result.get(i).size(); j++){
                 System.out.println();
                 StrategicVotingOption s = result.get(i).get(j);
-                System.out.println("Strategic voting option # " + (j+1) + " for voter # " + (s.voterID+1) + ":");
+                System.out.println("Strategic voting option # " + (i+1) + " for voter # " + (s.voterID+1) + ":");
                 System.out.format(format, "v", "newO");
                 System.out.println("---------------------------------------------------");
                 for (int k=0; k<s.v.length; k++) {

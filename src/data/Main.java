@@ -26,9 +26,19 @@ public class Main {
 		initialize();
 	}
 
+	private char[][] getTestMatrix(){
+		char[][] matrix = {{'C', 'B', 'C', 'B', 'B'},
+							{'A', 'D', 'D', 'D', 'C'},
+							{'D', 'C', 'A', 'C', 'D'},
+							{'B', 'A', 'B', 'A', 'A'}};
+		return matrix;
+
+	}
+
 	private void initialize() {
 		askForSettings();
-		askForPreferenceMatrix();
+		preferenceMatrix = transposeMatrix(getTestMatrix());
+	//	askForPreferenceMatrix();
 	//	askForRandomPreferenceMatrix();
 
 		JFrame frame = new JFrame("Tactical Voting Analyst");

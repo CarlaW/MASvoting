@@ -23,7 +23,7 @@ public class PopupSettings extends JPanel {
         JPanel panel = new JPanel();
         String[] schemes = {"Voting for 1 (Plurality)", "Voting for 2", "Anti-plurality (Veto)", "Borda"};
         schemeList = new JComboBox(schemes);
-        schemeList.setSelectedIndex(0);
+        schemeList.setSelectedIndex(3);
         panel.add(new JLabel("Voting scheme"));
         panel.add(schemeList);
         return panel;

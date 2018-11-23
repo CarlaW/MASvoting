@@ -15,6 +15,17 @@ public class Helper {
 		return Arrays.copyOf(arr, arr.length);
 	}
 
+	public static String[][] makeDeepCopy(String[][] arr) {
+		if (arr == null) {
+			return null;
+		}
+		final String[][] result = new String[arr.length][];
+		for (int i = 0; i < arr.length; i++) {
+			result[i] = Arrays.copyOf(arr[i], arr[i].length);
+		}
+		return result;
+	}
+
 	public static int getIndexOf(char[] arr, char key) {
 		int res = IntStream.range(0, arr.length).filter(i -> arr[i] == key).findFirst().orElse(-1);
 		return res;
