@@ -101,6 +101,7 @@ public class TVA {
 		ArrayList<StrategicVotingOption> setOfOptions = new ArrayList<StrategicVotingOption>();
 		for (int i = 1; i < numOfCandidates; i++) {
 			for (int j = 0; j < i; j++) {
+
 				char[] newPreference = swap(j, i, truePreference);
 				preferenceMatrix[voterID] = newPreference; // Put new Voting Vector in preference matrix
 				Pair[] newOutcome = calculateVotingOutcome(preferenceMatrix);
