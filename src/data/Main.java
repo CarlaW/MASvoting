@@ -28,7 +28,8 @@ public class Main {
 	private Main() {
 
 //		initialize();
-		runExperiment();
+//		runExperiment();
+		runExperiment(6, 4, 100);
 	}
 
 	private char[][] getTestMatrix() {
@@ -67,14 +68,14 @@ public class Main {
 
 	private void runExperiment(int numOfVoters, int numOfCandidates, int numOfRuns) {
 		this.numOfVoters = numOfVoters;
-		this.numOfCandidates = numOfVoters;
+		this.numOfCandidates = numOfCandidates;
 
 		ArrayList<char[][]> testSample = new ArrayList<char[][]>();
 
 		for (int i = 0; i < numOfRuns; i++) {
 			testSample.add(askForRandomPreferenceMatrix());
 		}
-		
+
 		Experiment firstExperiment = new Experiment(testSample);
 
 	}

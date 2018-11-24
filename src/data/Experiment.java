@@ -16,7 +16,7 @@ public class Experiment {
 	float[][] riskPerScheme, happinessPerScheme;
 
 	public Experiment(ArrayList<char[][]> matrixPermutation) {
-		this.numOfVoters = matrixPermutation.get(0).length;
+		this.numOfVoters = matrixPermutation.get(0)[0].length;
 		this.numOfCandidates = matrixPermutation.get(0)[0].length;
 		this.matrixPermutation = matrixPermutation;
 		riskPerScheme = new float[schemes.length][];
@@ -32,8 +32,6 @@ public class Experiment {
 			e.printStackTrace();
 		}
 	}
-	
-
 
 	private void run(ArrayList<char[][]> matrixPermutation, int votingScheme) {
 		riskPerPermutation = new float[matrixPermutation.size()];
