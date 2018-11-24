@@ -45,7 +45,7 @@ public class TVA {
 					result.get(i).addAll(bull);
 				}
 				ArrayList<StrategicVotingOption> permutate = tryPermutate(i);
-				if (!(bull.isEmpty())) {
+				if (!(permutate.isEmpty())) {
 					result.get(i).addAll(permutate);
 				}
 			}
@@ -196,9 +196,9 @@ public class TVA {
 			preferenceMatrix[voterID] = newPreference; // Put new Voting Vector in preference matrix
 			Pair[] newOutcome = calculateVotingOutcome(preferenceMatrix);
 			int[] newHappiness = calculateHappiness(newOutcome[0], truePreferenceMatrix);
-			if (shouldManipulate(truePreference[0], oldOutcome, newOutcome, oldHappiness, newHappiness[voterID]))
-				;
-			setOfOptions.add(new StrategicVotingOption(newPreference, newOutcome, newHappiness, "", voterID));
+			if (shouldManipulate(truePreference[0], oldOutcome, newOutcome, oldHappiness, newHappiness[voterID])) {
+				setOfOptions.add(new StrategicVotingOption(newPreference, newOutcome, newHappiness, "", voterID));
+			}
 		}
 		return setOfOptions;
 	}
