@@ -10,57 +10,71 @@ public class Experiment {
 	// TODO Put it somewhere else
 	public static final String[] schemes = { "Voting for 1 (Plurality)", "Voting for 2", "Anti-plurality (Veto)",
 			"Borda" };;
-	private int votingScheme;
+	private int numOfVoters, numOfCandidates;
 	ArrayList<char[][]> matrixPermutation;
-	float[] riskPerPermutation;
-	float[][] riskPerScheme;
-	String outputInfo;
+	float[] riskPerPermutation, happinessPerPermutation;
+	float[][] riskPerScheme, happinessPerScheme;
 
-	public Experiment(int votingScheme, ArrayList<char[][]> matrixPermutation, String oututInfo) {
-		this.outputInfo = oututInfo;
-		this.votingScheme = votingScheme;
+	public Experiment(ArrayList<char[][]> matrixPermutation) {
+		this.numOfVoters = matrixPermutation.get(0).length;
+		this.numOfCandidates = matrixPermutation.get(0)[0].length;
 		this.matrixPermutation = matrixPermutation;
-		riskPerPermutation = getRiskArray(matrixPermutation, votingScheme);
+		riskPerScheme = new float[schemes.length][];
+		happinessPerScheme = new float[schemes.length][];
+		for (int i = 0; i < schemes.length; i++) {
+			run(matrixPermutation, i);
+			riskPerScheme[i] = riskPerPermutation;
+			happinessPerScheme[i] = happinessPerPermutation;
+		}
 		try {
-			writeRisk(riskPerPermutation);
+			writeData();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
+	
 
-	public Experiment(ArrayList<char[][]> matrixPermutation) {
-		this.matrixPermutation = matrixPermutation;
-		for (int i = 0; i < schemes.length; i++) {
-			riskPerScheme[i] = getRiskArray(matrixPermutation, i);
-			try {
-				writeRisk(riskPerPermutation);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 
-	private float[] getRiskArray(ArrayList<char[][]> matrixPermutation, int votingScheme) {
-		float[] riskPerPermutation = new float[matrixPermutation.size()];
+	private void run(ArrayList<char[][]> matrixPermutation, int votingScheme) {
+		riskPerPermutation = new float[matrixPermutation.size()];
+		happinessPerPermutation = new float[matrixPermutation.size()];
 		for (int h = 0; h < matrixPermutation.size(); h++) {
 			char[][] prefMatrix = matrixPermutation.get(h);
 			TVA tva = new TVA(votingScheme, prefMatrix);
 			riskPerPermutation[h] = tva.getRisk();
+			happinessPerPermutation[h] = tva.getHappinessSum();
 		}
-		return riskPerPermutation;
 	}
 
-	public float[] getRiskPerPermutation() {
-		return riskPerPermutation;
-	}
-
-	public void writeRisk(float[] riskPerPermutation) throws FileNotFoundException {
-		PrintWriter pw = new PrintWriter(new File("risk" + outputInfo + ".csv"));
+	public void writeData() throws FileNotFoundException {
+		PrintWriter pw = new PrintWriter(new File("risk_c" + numOfCandidates + "_v" + numOfVoters + ".csv"));
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < riskPerPermutation.length; i++) {
-			sb.append(riskPerPermutation[i]);
-			System.out.println(riskPerPermutation[i]);
+
+		for (int i = 0; i < riskPerScheme[0].length; i++) {
+			sb.append(i);
 			sb.append(',');
+		}
+		sb.append("\n");
+
+		sb.append("STARTING ON RISK");
+		sb.append("\n");
+
+		for (int j = 0; j < riskPerScheme.length; j++) {
+			for (int i = 0; i < riskPerScheme[j].length; i++) {
+				sb.append(riskPerScheme[j][i]);
+				sb.append(',');
+			}
+			sb.append("\n");
+		}
+		sb.append("\n");
+		sb.append("STARTING ON HAPPINESS");
+		sb.append("\n");
+		for (int j = 0; j < happinessPerScheme.length; j++) {
+			for (int i = 0; i < happinessPerScheme[j].length; i++) {
+				sb.append(happinessPerScheme[j][i]);
+				sb.append(',');
+			}
+			sb.append("\n");
 		}
 		pw.write(sb.toString());
 		pw.close();

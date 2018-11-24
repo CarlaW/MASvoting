@@ -15,8 +15,8 @@ import view.RandomInput;
 
 public class Main {
 
-	private int noVoters;
-	private int noOptions;
+	private int numOfVoters;
+	private int numOfCandidates;
 
 	private int votingScheme;
 	private char[][] preferenceMatrix;
@@ -53,11 +53,28 @@ public class Main {
 	}
 
 	private void runExperiment() {
-		char[] temp = { 'A', 'B', 'C' };
+
+		char[] temp = { 'A', 'B', 'C', 'D' };
+		int numOfVoters = 3;
+
 		Permutation vectorPermutations = new Permutation(temp);
-		Permutation matrixPermutations = new Permutation(vectorPermutations.finalVector, 3);
-		
+		Permutation matrixPermutations = new Permutation(vectorPermutations.finalVector, numOfVoters);
+
 		ArrayList<char[][]> testSample = matrixPermutations.getMatrixPermutations();
+		Experiment firstExperiment = new Experiment(testSample);
+
+	}
+
+	private void runExperiment(int numOfVoters, int numOfCandidates, int numOfRuns) {
+		this.numOfVoters = numOfVoters;
+		this.numOfCandidates = numOfVoters;
+
+		ArrayList<char[][]> testSample = new ArrayList<char[][]>();
+
+		for (int i = 0; i < numOfRuns; i++) {
+			testSample.add(askForRandomPreferenceMatrix());
+		}
+		
 		Experiment firstExperiment = new Experiment(testSample);
 
 	}
@@ -70,15 +87,15 @@ public class Main {
 		}
 		votingScheme = settings.getVotingScheme().getSelectedIndex();
 		try {
-			noVoters = Integer.parseInt(settings.getVoters().getText());
-			noOptions = Integer.parseInt(settings.getOptions().getText());
-			if (noOptions > 26) {
+			numOfVoters = Integer.parseInt(settings.getVoters().getText());
+			numOfCandidates = Integer.parseInt(settings.getOptions().getText());
+			if (numOfCandidates > 26) {
 				JOptionPane.showMessageDialog(null, "There can be no more than 26 preferences.");
 				askForSettings();
-			} else if (noOptions < 3) {
+			} else if (numOfCandidates < 3) {
 				JOptionPane.showMessageDialog(null, "There have to be more than 2 preferences.");
 				askForSettings();
-			} else if (noVoters < 3) {
+			} else if (numOfVoters < 3) {
 				JOptionPane.showMessageDialog(null, "There have to be more than 2 voters.");
 				askForSettings();
 			}
@@ -89,7 +106,7 @@ public class Main {
 	}
 
 	private void askForPreferenceMatrix() {
-		PopupInput input = new PopupInput(noVoters, noOptions);
+		PopupInput input = new PopupInput(numOfVoters, numOfCandidates);
 		int out = JOptionPane.showConfirmDialog(null, input, "Enter preference matrix", JOptionPane.OK_CANCEL_OPTION);
 		if (out != 0) {
 			System.exit(0);
@@ -113,8 +130,8 @@ public class Main {
 	}
 
 	private boolean doubleVotePerVoter() {
-		for (int i = 0; i < noVoters; i++) {
-			for (int j = 0; j < noOptions - 1; j++) {
+		for (int i = 0; i < numOfVoters; i++) {
+			for (int j = 0; j < numOfCandidates - 1; j++) {
 				if (preferenceMatrix[j][i] == preferenceMatrix[j + 1][i]) {
 					if (preferenceMatrix[j][i] == ' ') {
 						continue;
@@ -126,13 +143,14 @@ public class Main {
 		return false;
 	}
 
-	private void askForRandomPreferenceMatrix() {
-		RandomInput input = new RandomInput(noVoters, noOptions);
+	private char[][] askForRandomPreferenceMatrix() {
+		RandomInput input = new RandomInput(numOfVoters, numOfCandidates);
 		preferenceMatrix = input.getRandomPreferenceMatrix();
+		return preferenceMatrix;
 	}
 
 	private boolean noVotesPerVoter() {
-		for (int i = 0; i < noVoters; i++) {
+		for (int i = 0; i < numOfVoters; i++) {
 			if (preferenceMatrix[0][i] == preferenceMatrix[0][i]) {
 				if (preferenceMatrix[0][i] == ' ') {
 					return true;

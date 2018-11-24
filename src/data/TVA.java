@@ -57,7 +57,7 @@ public class TVA {
 		addVotingOutcomeToMatrix(this.oldOutcome);
 		int[] happiness = calculateHappiness(winner, truePreferenceMatrix);
 		addHappinessToMatrix(happiness);
-		displayInConsole(votingScheme);
+//		displayInConsole(votingScheme);
 	}
 
 	private boolean shouldManipulate(char trueFavorite, Pair[] oldOutcome, Pair[] newOutcome, int oldHappiness,
@@ -423,8 +423,13 @@ public class TVA {
 		return risk;
 	}
 
+	public float getHappinessSum() {
+		happiness = IntStream.of(overallHappiness).sum();
+		return happiness;
+	}
+
 	private ArrayList<ArrayList<StrategicVotingOption>> result;
-	private float risk;
+	private float risk, happiness;
 	private final String[] schemes = { "Voting for 1 (Plurality)", "Voting for 2", "Anti-plurality (Veto)", "Borda" };
 	private char[][] preferenceMatrix, truePreferenceMatrix;
 	private String[][] stringMatrix;
