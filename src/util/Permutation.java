@@ -8,7 +8,7 @@ public class Permutation {
 	ArrayList<ArrayList<char[]>> matrixPermutations;
 
 	public Permutation(char[] arr) {
-		vectorPermutations = new ArrayList<char[]>();
+		vectorPermutations = new ArrayList<>();
 		permuteVector(new String(arr), 0, arr.length - 1);
 
 	}
