@@ -1,13 +1,16 @@
-package data;
+package view;
+
+import static util.Helper.*;
 
 import java.awt.GridLayout;
 import java.util.Random;
 
-import static data.Helper.*;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import util.JTextFieldLimit;
 
 public class PopupInput extends JPanel {
 

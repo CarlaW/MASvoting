@@ -1,8 +1,12 @@
 package data;
 
+import static util.Helper.transposeMatrix;
+
 import javax.swing.*;
 
-import static data.Helper.transposeMatrix;
+import view.PopupInput;
+import view.PopupSettings;
+import view.RandomInput;
 
 public class Main {
 

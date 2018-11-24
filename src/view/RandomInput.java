@@ -1,9 +1,11 @@
-package data;
+package view;
 
-import static data.Helper.makeDeepCopy;
+import static util.Helper.makeDeepCopy;
 
 import java.util.Arrays;
 import java.util.Random;
+
+import util.JTextFieldLimit;
 
 public class RandomInput {
 

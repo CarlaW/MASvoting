@@ -1,4 +1,4 @@
-package data;
+package util;
 import javax.swing.text.*;
 
 public class JTextFieldLimit extends PlainDocument {

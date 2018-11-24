@@ -1,9 +1,10 @@
-package data;
-
-import static data.Helper.makeDeepCopy;
+package util;
 
 import java.util.Arrays;
 import java.util.stream.IntStream;
+
+import data.Pair;
+import data.VotingScheme;
 
 public class Helper {
 
@@ -53,6 +54,13 @@ public class Helper {
 		return res;
 	}
 
+	public static int factorial(int n) {
+		if (n == 0)
+			return 1;
+		else
+			return (n * factorial(n - 1));
+	}
+
 	public static VotingScheme getVotingSchemeByName(int ID) {
 		VotingScheme res = null;
 		switch (ID) {
@@ -68,15 +76,16 @@ public class Helper {
 		return res;
 	}
 
-//	public static int CalculateOverallHapiness(PreferenceMatrix pm, boolean ifPrintHapiness) {
-//		int overallHapiness = 0;
-//		System.out.println("Hapiness:");
-//		for (int i = 0; i < pm.numOfVoters; i++) {
-//			VotingVector tempPreference = pm.table.get(i);
-//			int individualHapiness = CalculateSingleHapiness(pm, tempPreference);
-//			overallHapiness += individualHapiness;
-//			System.out.println(i + ": " + individualHapiness);
-//		}
-//		return overallHapiness;
-//	}
+	public void getPermutationsWithRepetition(char[] c, int n, String start) {
+		if (start.length() >= n) {
+			System.out.println(start);
+		} else {
+			for (char x : c) { // not a valid syntax in Java
+				getPermutationsWithRepetition(c, n, start + x);
+			}
+		}
+	}
+
 }
+
+//	public static int CalculateOverallHapiness(PreferenceMatrix pm, boolean ifPrintHapiness) 
