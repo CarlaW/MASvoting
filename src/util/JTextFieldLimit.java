@@ -6,6 +6,7 @@ public class JTextFieldLimit extends PlainDocument {
     public static final char[] ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
     private int limit;
     private String options = "";
+	
 
     public JTextFieldLimit(int limit, int noOptions) {
         super();

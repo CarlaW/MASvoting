@@ -26,6 +26,17 @@ public class Helper {
 		}
 		return result;
 	}
+	
+	public static char[][] makeDeepCopy(char[][] arr) {
+		if (arr == null) {
+			return null;
+		}
+		final char[][] result = new char[arr.length][];
+		for (int i = 0; i < arr.length; i++) {
+			result[i] = arr[i].clone();
+		}
+		return result;
+	}
 
 	public static int getIndexOf(char[] arr, char key) {
 		int res = IntStream.range(0, arr.length).filter(i -> arr[i] == key).findFirst().orElse(-1);
@@ -76,14 +87,12 @@ public class Helper {
 		return res;
 	}
 
-	public void getPermutationsWithRepetition(char[] c, int n, String start) {
-		if (start.length() >= n) {
-			System.out.println(start);
-		} else {
-			for (char x : c) { // not a valid syntax in Java
-				getPermutationsWithRepetition(c, n, start + x);
-			}
+	public static void printBoard(char[][] board) {
+		for (char[] c : board) {
+			System.out.print(new String(c) + "|");
+			System.out.println();
 		}
+		System.out.println();
 	}
 
 }

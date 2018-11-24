@@ -10,7 +10,6 @@ import java.util.stream.IntStream;
 public class TVA {
 
 	public TVA(int votingScheme, char[][] preferenceMatrix) {
-
 		/*
 		 * First transpose the preference matrix and create VotingScheme enum and assign
 		 * variables
@@ -44,10 +43,10 @@ public class TVA {
 				if (!(bull.isEmpty())) {
 					result.get(i).addAll(bull);
 				}
-				ArrayList<StrategicVotingOption> permutate = tryPermutate(i);
-				if (!(bull.isEmpty())) {
-					result.get(i).addAll(permutate);
-				}
+//				ArrayList<StrategicVotingOption> permutate = tryPermutate(i);
+//				if (!(bull.isEmpty())) {
+//					result.get(i).addAll(permutate);
+//				}
 			}
 		}
 
@@ -335,6 +334,7 @@ public class TVA {
 	}
 
 	private void displayInConsole(int votingScheme) {
+
 		System.out.println();
 		String current = "Current voting scheme: " + schemes[votingScheme];
 		String v = "{";
@@ -417,6 +417,10 @@ public class TVA {
 			}
 
 		}
+	}
+
+	public float getRisk() {
+		return risk;
 	}
 
 	private ArrayList<ArrayList<StrategicVotingOption>> result;

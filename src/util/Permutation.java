@@ -1,55 +1,64 @@
 package util;
 
 import java.util.ArrayList;
+import static util.Helper.*;
 
 public class Permutation {
 
-	ArrayList<char[]> vectorPermutations;
-	ArrayList<ArrayList<char[]>> matrixPermutations;
+	public ArrayList<char[]> finalVector;
+	public ArrayList<char[][]> finalMatrix;
 
 	public Permutation(char[] arr) {
-		vectorPermutations = new ArrayList<char[]>();
+		finalVector = new ArrayList<char[]>();
 		permuteVector(new String(arr), 0, arr.length - 1);
 
 	}
 
-	public Permutation(char[][] arr) {
-		matrixPermutations = new ArrayList<ArrayList<char[]>>();
-		vectorPermutations = new ArrayList<char[]>();
-		permuteVector(new String(arr[0]), 0, arr[0].length - 1);
+	public Permutation(ArrayList<char[]> arrList, int numOfVoters) {
+		finalMatrix = new ArrayList<char[][]>();
+		char[][] perm = new char[numOfVoters][arrList.get(0).length];
+		permuteVertorsWithRepeats(perm, 0, arrList);
+		printMatrix(finalMatrix);
 
+	}
+
+	public void permuteVertorsWithRepeats(char[][] perm, int pos, ArrayList<char[]> start) {
+		if (pos == perm.length) {
+			char[][] temp = makeDeepCopy(perm);
+			this.finalMatrix.add(temp);
+		} else {
+			for (int i = 0; i < start.size(); i++) {
+				perm[pos] = start.get(i);
+				permuteVertorsWithRepeats(perm, pos + 1, start);
+			}
+		}
 	}
 
 	public ArrayList<char[]> getVectorPermutations() {
-		return vectorPermutations;
+		return finalVector;
 	}
 
-	public ArrayList<ArrayList<char[]>> getMatrixPermutations() {
-		return matrixPermutations;
+	public ArrayList<char[][]> getMatrixPermutations() {
+		return finalMatrix;
+	}
+
+	public void printMatrix(ArrayList<char[][]> matrix) {
+		for (char[][] c : matrix) {
+			printBoard(c);
+		}
 	}
 
 	/**
-	 * permutation function
+	 * permutation function §
 	 * 
 	 * @param str string to calculate permutation for
 	 * @param l   starting index
 	 * @param r   end index
 	 */
 
-	public void permuteMatrix(char[][] matrix, int n, ArrayList<char[]> start) {
-		if (start.size() >= n) {
-			this.vectorPermutations.addAll(start);
-		} else {
-			for (char x[] : matrix) { // not a valid syntax in Java
-				start.add(x);
-				permuteMatrix(matrix, n, start);
-			}
-		}
-	}
-
 	private void permuteVector(String str, int l, int r) {
 		if (l == r) {
-			this.vectorPermutations.add(str.toCharArray());
+			this.finalVector.add(str.toCharArray());
 		} else {
 			for (int i = l; i <= r; i++) {
 				str = swap(str, l, i);
@@ -74,13 +83,6 @@ public class Permutation {
 		charArray[i] = charArray[j];
 		charArray[j] = temp;
 		return String.valueOf(charArray);
-	}
-
-	public void print() {
-		for (char[] c : vectorPermutations) {
-			System.out.println(new String(c));
-		}
-
 	}
 
 }

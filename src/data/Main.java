@@ -2,8 +2,13 @@ package data;
 
 import static util.Helper.transposeMatrix;
 
-import javax.swing.*;
+import java.util.ArrayList;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import util.Permutation;
 import view.PopupInput;
 import view.PopupSettings;
 import view.RandomInput;
@@ -21,30 +26,40 @@ public class Main {
 	}
 
 	private Main() {
-		initialize();
+
+//		initialize();
+		runExperiment();
 	}
 
-	private char[][] getTestMatrix(){
-		char[][] matrix = {{'C', 'B', 'C', 'B', 'B'},
-							{'A', 'D', 'D', 'D', 'C'},
-							{'D', 'C', 'A', 'C', 'D'},
-							{'B', 'A', 'B', 'A', 'A'}};
+	private char[][] getTestMatrix() {
+		char[][] matrix = { { 'C', 'B', 'C', 'B', 'B' }, { 'A', 'D', 'D', 'D', 'C' }, { 'D', 'C', 'A', 'C', 'D' },
+				{ 'B', 'A', 'B', 'A', 'A' } };
 		return matrix;
 
 	}
 
 	private void initialize() {
 		askForSettings();
-	//	preferenceMatrix = transposeMatrix(getTestMatrix());
-	//	askForPreferenceMatrix();
+		// preferenceMatrix = transposeMatrix(getTestMatrix());
+		// askForPreferenceMatrix();
 		askForRandomPreferenceMatrix();
 
 		JFrame frame = new JFrame("Tactical Voting Analyst");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JPanel panel = new JPanel();
-	
+
 		TVA tva = new TVA(votingScheme, preferenceMatrix);
+	}
+
+	private void runExperiment() {
+		char[] temp = { 'A', 'B', 'C' };
+		Permutation vectorPermutations = new Permutation(temp);
+		Permutation matrixPermutations = new Permutation(vectorPermutations.finalVector, 3);
+		
+		ArrayList<char[][]> testSample = matrixPermutations.getMatrixPermutations();
+		Experiment firstExperiment = new Experiment(testSample);
+
 	}
 
 	private void askForSettings() {
@@ -110,7 +125,7 @@ public class Main {
 		}
 		return false;
 	}
-	
+
 	private void askForRandomPreferenceMatrix() {
 		RandomInput input = new RandomInput(noVoters, noOptions);
 		preferenceMatrix = input.getRandomPreferenceMatrix();
