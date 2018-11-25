@@ -43,10 +43,10 @@ public class TVA {
 				if (!(bull.isEmpty())) {
 					result.get(i).addAll(bull);
 				}
-				ArrayList<StrategicVotingOption> permutate = tryPermutate(i);
-				if (!(bull.isEmpty())) {
-					result.get(i).addAll(permutate);
-				}
+//				ArrayList<StrategicVotingOption> permutate = tryPermutate(i);
+//				if (!(bull.isEmpty())) {
+//					result.get(i).addAll(permutate);
+//				}
 			}
 		}
 
@@ -114,29 +114,8 @@ public class TVA {
 	 * StrategicVotingOptions
 	 * 
 	 */
-	public ArrayList<StrategicVotingOption> tryCompromise(int voterID) {
-		char[] truePreference = truePreferenceMatrix[voterID];
-		int oldHappiness = overallHappiness[voterID];
-		ArrayList<StrategicVotingOption> setOfOptions = new ArrayList<StrategicVotingOption>();
-		for (int i = 1; i < numOfCandidates; i++) {
-			for (int j = 0; j < i; j++) {
-				char[] newPreference = swap(j, i, truePreference);
-				preferenceMatrix[voterID] = newPreference; // Put new Voting Vector in preference matrix
-				Pair[] newOutcome = calculateVotingOutcome(preferenceMatrix);
-				int[] newHappiness = calculateHappiness(newOutcome[0], truePreferenceMatrix);
-				if (shouldManipulate(truePreference[0], oldOutcome, newOutcome, oldHappiness, newHappiness[voterID])) {
-					String reasoning = reasoningString(truePreference[0], oldOutcome, newOutcome, oldHappiness,
-							newHappiness, voterID, "compromising", i, j);
-					setOfOptions.add(
-							new StrategicVotingOption(newPreference, newOutcome, newHappiness, reasoning, voterID));
-				}
-			}
-		}
-		preferenceMatrix[voterID] = truePreference;
-		return setOfOptions;
-	}
 
-	public ArrayList<StrategicVotingOption> tryPermutate(int voterID) {
+	public ArrayList<StrategicVotingOption> tryCompromise(int voterID) {
 		char[] truePreference = truePreferenceMatrix[voterID];
 		int oldHappiness = overallHappiness[voterID];
 		ArrayList<StrategicVotingOption> setOfOptions = new ArrayList<StrategicVotingOption>();
@@ -151,7 +130,7 @@ public class TVA {
 					int[] newHappiness = calculateHappiness(newOutcome[0], truePreferenceMatrix);
 					if (newHappiness[voterID] > oldHappiness) {
 						String reasoning = reasoningString(truePreference[0], oldOutcome, newOutcome, oldHappiness,
-								newHappiness, voterID, "NEW COMPROMISING", i, j);
+								newHappiness, voterID, "compromising", i, j);
 						setOfOptions.add(
 								new StrategicVotingOption(newPreference, newOutcome, newHappiness, reasoning, voterID));
 					}
