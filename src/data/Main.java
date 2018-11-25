@@ -55,7 +55,7 @@ public class Main {
 
 	private void runExperiment() {
 
-		char[] temp = { 'A', 'B', 'C', 'D' };
+		char[] temp = { 'A', 'B', 'C' };
 		int numOfVoters = 5;
 
 		Permutation vectorPermutations = new Permutation(temp);

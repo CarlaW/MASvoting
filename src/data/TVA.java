@@ -43,9 +43,7 @@ public class TVA {
 				if (!(bull.isEmpty())) {
 					result.get(i).addAll(bull);
 				}
-//				ArrayList<StrategicVotingOption> permutate = tryPermutate(i);
-//				if (!(bull.isEmpty())) {
-//					result.get(i).addAll(permutate);
+
 //				}
 			}
 		}
@@ -57,7 +55,7 @@ public class TVA {
 		addVotingOutcomeToMatrix(this.oldOutcome);
 		int[] happiness = calculateHappiness(winner, truePreferenceMatrix);
 		addHappinessToMatrix(happiness);
-		displayInConsole(votingScheme);
+//		displayInConsole(votingScheme);
 	}
 
 	private boolean shouldManipulate(char trueFavorite, Pair[] oldOutcome, Pair[] newOutcome, int oldHappiness,
