@@ -41,8 +41,8 @@ public class Main {
 
 	private void initialize() {
 		askForSettings();
-		 preferenceMatrix = transposeMatrix(getTestMatrix());
-//		 askForPreferenceMatrix();
+		preferenceMatrix = transposeMatrix(getTestMatrix());
+//		 askForPreferenceMØatrix();
 		askForRandomPreferenceMatrix();
 
 		JFrame frame = new JFrame("Tactical Voting Analyst");

@@ -43,10 +43,10 @@ public class TVA {
 				if (!(bull.isEmpty())) {
 					result.get(i).addAll(bull);
 				}
-//				ArrayList<StrategicVotingOption> permutate = tryPermutate(i);
-//				if (!(bull.isEmpty())) {
-//					result.get(i).addAll(permutate);
-//				}
+				ArrayList<StrategicVotingOption> permutate = tryPermutate(i);
+				if (!(bull.isEmpty())) {
+					result.get(i).addAll(permutate);
+				}
 			}
 		}
 
@@ -76,11 +76,10 @@ public class TVA {
 
 	/*
 	 * 
-	 * COMPROMISING Iterate over possible options and return set of
-	 * StrategicVotingOptions
+	 * Bury Iterate over possible options and return set of StrategicVotingOptions
 	 * 
 	 */
-	private ArrayList<StrategicVotingOption> tryCompromise(int voterID) {
+	private ArrayList<StrategicVotingOption> tryBury(int voterID) {
 		char[] truePreference = truePreferenceMatrix[voterID];
 		int oldHappiness = overallHappiness[voterID];
 		ArrayList<StrategicVotingOption> setOfOptions = new ArrayList<StrategicVotingOption>();
@@ -97,7 +96,7 @@ public class TVA {
 						if (shouldManipulate(truePreference[0], oldOutcome, newOutcome, oldHappiness,
 								newHappiness[voterID])) {
 							String reasoning = reasoningString(truePreference[0], oldOutcome, newOutcome, oldHappiness,
-									newHappiness, voterID, "compromising", j, k);
+									newHappiness, voterID, "burying", j, k);
 							setOfOptions.add(new StrategicVotingOption(newPreference, newOutcome, newHappiness,
 									reasoning, voterID));
 						}
@@ -111,24 +110,51 @@ public class TVA {
 
 	/*
 	 * 
-	 * Bury Iterate over possible options and return set of StrategicVotingOptions
+	 * COMPROMISING Iterate over possible options and return set of
+	 * StrategicVotingOptions
 	 * 
 	 */
-	public ArrayList<StrategicVotingOption> tryBury(int voterID) {
+	public ArrayList<StrategicVotingOption> tryCompromise(int voterID) {
 		char[] truePreference = truePreferenceMatrix[voterID];
 		int oldHappiness = overallHappiness[voterID];
 		ArrayList<StrategicVotingOption> setOfOptions = new ArrayList<StrategicVotingOption>();
 		for (int i = 1; i < numOfCandidates; i++) {
-			for (int j = i + 1; j < numOfCandidates; j++) {
+			for (int j = 0; j < i; j++) {
 				char[] newPreference = swap(j, i, truePreference);
 				preferenceMatrix[voterID] = newPreference; // Put new Voting Vector in preference matrix
 				Pair[] newOutcome = calculateVotingOutcome(preferenceMatrix);
 				int[] newHappiness = calculateHappiness(newOutcome[0], truePreferenceMatrix);
 				if (shouldManipulate(truePreference[0], oldOutcome, newOutcome, oldHappiness, newHappiness[voterID])) {
 					String reasoning = reasoningString(truePreference[0], oldOutcome, newOutcome, oldHappiness,
-							newHappiness, voterID, "burying", i, j);
+							newHappiness, voterID, "compromising", i, j);
 					setOfOptions.add(
 							new StrategicVotingOption(newPreference, newOutcome, newHappiness, reasoning, voterID));
+				}
+			}
+		}
+		preferenceMatrix[voterID] = truePreference;
+		return setOfOptions;
+	}
+
+	public ArrayList<StrategicVotingOption> tryPermutate(int voterID) {
+		char[] truePreference = truePreferenceMatrix[voterID];
+		int oldHappiness = overallHappiness[voterID];
+		ArrayList<StrategicVotingOption> setOfOptions = new ArrayList<StrategicVotingOption>();
+		for (int i = 0; i < numOfCandidates; i++) {
+			int oldFavoritePlace = getIndexOf(oldOutcome, truePreference[i]);
+			for (int j = i + 1; j < numOfCandidates; j++) {
+				int oldOtherPlace = getIndexOf(oldOutcome, truePreference[j]);
+				if (oldFavoritePlace < oldOtherPlace) {
+					char[] newPreference = swap(j, i, truePreference);
+					preferenceMatrix[voterID] = newPreference; // Put new Voting Vector in preference matrix
+					Pair[] newOutcome = calculateVotingOutcome(preferenceMatrix);
+					int[] newHappiness = calculateHappiness(newOutcome[0], truePreferenceMatrix);
+					if (newHappiness[voterID] > oldHappiness) {
+						String reasoning = reasoningString(truePreference[0], oldOutcome, newOutcome, oldHappiness,
+								newHappiness, voterID, "NEW COMPROMISING", i, j);
+						setOfOptions.add(
+								new StrategicVotingOption(newPreference, newOutcome, newHappiness, reasoning, voterID));
+					}
 				}
 			}
 		}
