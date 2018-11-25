@@ -4,6 +4,10 @@ import java.util.Arrays;
 
 public class StrategicVotingOption {
 
+	/*
+	stores the strategic voting option tuples
+	 */
+
 	public char[] v;
 	public Pair[] newO;
 	public int[] newH;

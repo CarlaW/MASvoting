@@ -10,20 +10,29 @@ import java.util.stream.IntStream;
 public class TVA {
 
 	public TVA(int votingScheme, char[][] preferenceMatrix) {
+
 		/*
 		 * First transpose the preference matrix and create VotingScheme enum and assign
 		 * variables
 		 */
-
 		this.preferenceMatrix = preferenceMatrix;
 		this.truePreferenceMatrix = this.preferenceMatrix.clone();
 		this.numOfVoters = this.preferenceMatrix.length;
 		this.numOfCandidates = this.preferenceMatrix[0].length;
 		this.scheme = getVotingSchemeByName(votingScheme);
+		/*
+		calculate original voting outcome
+		 */
 		this.oldOutcome = calculateVotingOutcome(truePreferenceMatrix);
 		this.winner = this.oldOutcome[0];
+		/*
+		calculate original happiness
+		 */
 		this.overallHappiness = calculateHappiness(winner, truePreferenceMatrix);
 
+		/*
+		create new Arraylist to store all the strategical voting options
+		 */
 		result = new ArrayList<>(numOfVoters);
 
 		// Iterate over voters
@@ -43,8 +52,6 @@ public class TVA {
 				if (!(bull.isEmpty())) {
 					result.get(i).addAll(bull);
 				}
-
-//				}
 			}
 		}
 
@@ -142,9 +149,8 @@ public class TVA {
 	}
 
 	/*
-	 * 
 	 * BULLETVOTING
-	 * 
+	 *
 	 */
 	public ArrayList<StrategicVotingOption> tryBulletVoting(int voterID) {
 		char[] truePreference = truePreferenceMatrix[voterID];
@@ -227,6 +233,9 @@ public class TVA {
 	}
 
 	private float calculateRisk(ArrayList<ArrayList<StrategicVotingOption>> strategicVotingOptions) {
+		/*
+		loop through the result ArrayList which stores for each voter a possibly empty list of strategic voting options
+		 */
 		float result = 0;
 		for (int i = 0; i < strategicVotingOptions.size(); i++) {
 			if (strategicVotingOptions.get(i).size() != 0) {
@@ -253,12 +262,6 @@ public class TVA {
 		return newPreference;
 	}
 
-//	private String reasoningFromOutcome() {
-//
-//		return reason;
-//
-//	}
-
 	private String[][] initMatrix() {
 		int options = preferenceMatrix.length + 2;
 		int voters = preferenceMatrix[0].length + 2;
@@ -269,31 +272,24 @@ public class TVA {
 			for (int j = 0; j < voters; j++) {
 				if ((i == 0 && j == 0) || (i != 0 && i != (options - 1) && j == (voters - 1))
 						|| (i == (options - 1) && j != 0 && j != (voters - 1))) {
-					// System.out.println("top left corner and happiness and voting oldOutcome");
 					text = " ";
 					matrix[i][j] = text;
 				} else if (i == 0 && j != (voters - 1)) {
-					// System.out.println("top row");
 					text = "Voter #" + j;
 					matrix[i][j] = text;
 				} else if (i == 0 && j == (voters - 1)) {
-					// System.out.println("top right corner");
 					text = "Voting outcome O";
 					matrix[i][j] = text;
 				} else if (j == 0 && i != 0 && i != (options - 1)) {
-					// System.out.println("left column");
 					text = "Preference #" + i;
 					matrix[i][j] = text;
 				} else if (j == 0 && i == (options - 1)) {
-					// System.out.println("left bottom corner");
 					text = "Voter happiness H";
 					matrix[i][j] = text;
 				} else if (i == (options - 1) && j == (voters - 1)) {
-					// System.out.println("right bottom corner");
 					text = "Risk for strategic voting R = " + risk;
 					matrix[i][j] = text;
 				} else {
-					// System.out.println("actual info");
 					text = Character.toString(preferenceMatrix[i - 1][j - 1]);
 					matrix[i][j] = text;
 				}
@@ -324,6 +320,9 @@ public class TVA {
 	}
 
 	private void displayInConsole(int votingScheme) {
+		/*
+		Displays the output into the Console
+		 */
 
 		System.out.println();
 		String current = "Current voting scheme: " + schemes[votingScheme];
@@ -357,12 +356,13 @@ public class TVA {
 		System.out.println();
 		System.out.println();
 
+		/*
+		changes the stringMatrix such that the new preference list is displayed right next to the old one for better comparison
+		 */
 		for (int g = 0; g < result.size(); g++) { // each voters strategic option
-			// System.out.println("g = " + g);
 			System.out.println("Voter # " + (g + 1) + " has " + result.get(g).size() + " strategic voting options");
 			System.out.println();
 			for (int h = 0; h < result.get(g).size(); h++) {
-				// System.out.println("h = " + h);
 				if (result.get(g).size() != 0) {
 					String[][] newStringMatrix = makeDeepCopy(stringMatrix);
 					newStringMatrix[0][0] = "Voter " + (g + 1) + ", option " + (h + 1);
@@ -377,21 +377,14 @@ public class TVA {
 							}
 							if ((result.get(g).get(0).voterID + 1) == i) {
 								if (j != newStringMatrix.length - 1) {
-									// System.out.println("result.get(g).get(h).v.length = " +
-									// result.get(g).get(h).v.length);
-									// System.out.println("j = " + j);
-									// for (int k=0; k<result.get(h).get(g).)
 									newStringMatrix[j][i] += " -> " + result.get(g).get(h).v[j - 1];
-								} /*
-									 * else { newStringMatrix[j][i] += " -> " + result.get(g).get(h).newH[g]; }
-									 */
+								}
 							} else if (i == stringMatrix[0].length - 1) {
 								if (j != newStringMatrix.length - 1) {
 									newStringMatrix[j][i] += " -> " + result.get(g).get(h).newO[j - 1].option + ": "
 											+ result.get(g).get(h).newO[j - 1].count;
 								}
 							}
-							// System.out.println(stringMatrix[j][i]);
 						}
 					}
 					if (result.get(g).size() != 0) {
