@@ -35,7 +35,10 @@ public class TVA {
 		 */
 		result = new ArrayList<>(numOfVoters);
 
-		// Iterate over voters
+		/*
+		Iterate over the voters
+		check if they haven't reached the maximum happiness
+		 */
 		for (int i = 0; i < numOfVoters; i++) {
 			result.add(new ArrayList<>());
 			int happiness = calculateHappiness(winner, truePreferenceMatrix)[i];
