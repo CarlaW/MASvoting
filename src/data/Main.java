@@ -27,9 +27,9 @@ public class Main {
 
 	private Main() {
 
-//		initialize();
+		initialize();
 //		runExperiment();
-		runExperiment(6, 4, 100);
+//		runExperiment(6, 4, 100);
 	}
 
 	private char[][] getTestMatrix() {
@@ -41,8 +41,8 @@ public class Main {
 
 	private void initialize() {
 		askForSettings();
-		// preferenceMatrix = transposeMatrix(getTestMatrix());
-		// askForPreferenceMatrix();
+		 preferenceMatrix = transposeMatrix(getTestMatrix());
+//		 askForPreferenceMatrix();
 		askForRandomPreferenceMatrix();
 
 		JFrame frame = new JFrame("Tactical Voting Analyst");
@@ -56,7 +56,7 @@ public class Main {
 	private void runExperiment() {
 
 		char[] temp = { 'A', 'B', 'C', 'D' };
-		int numOfVoters = 3;
+		int numOfVoters = 5;
 
 		Permutation vectorPermutations = new Permutation(temp);
 		Permutation matrixPermutations = new Permutation(vectorPermutations.finalVector, numOfVoters);

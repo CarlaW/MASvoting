@@ -57,7 +57,7 @@ public class TVA {
 		addVotingOutcomeToMatrix(this.oldOutcome);
 		int[] happiness = calculateHappiness(winner, truePreferenceMatrix);
 		addHappinessToMatrix(happiness);
-//		displayInConsole(votingScheme);
+		displayInConsole(votingScheme);
 	}
 
 	private boolean shouldManipulate(char trueFavorite, Pair[] oldOutcome, Pair[] newOutcome, int oldHappiness,
@@ -74,53 +74,34 @@ public class TVA {
 		return false;
 	}
 
-	private String reasoningString(char trueFavorite, Pair[] oldOutcome, Pair[] newOutcome, int oldHapp, int[] newHapp,
-			int voterID, String method, int swap1, int swap2) {
-		String reason = "";
-		voterID += 1;
-		if (swap2 != -1) {
-			reason += "When " + method + " " + swap1 + " for " + swap2;
-		} else {
-			reason += "When " + method + " for " + Character.toString(newOutcome[0].option);
-		}
-		if (newHapp[voterID - 1] > oldHapp) {
-			if (trueFavorite == newOutcome[0].option) {
-				reason += ", voter #" + voterID + " preferred the new outcome because the true favourite candidate "
-						+ Character.toString(trueFavorite) + " went up to the first place.";
-			} else {
-				reason += ", voter #" + voterID + " preferred the new outcome because another preferred candidate "
-						+ Character.toString(newOutcome[0].option) + " went up to the first place.";
-			}
-		} else {
-			reason += "Using " + method + ", voter #" + voterID
-					+ " did not get more happy, but his true favourite candidate " + Character.toString(trueFavorite)
-					+ " went up at least one position.";
-		}
-		return reason;
-	}
-
 	/*
 	 * 
 	 * COMPROMISING Iterate over possible options and return set of
 	 * StrategicVotingOptions
 	 * 
 	 */
-	public ArrayList<StrategicVotingOption> tryCompromise(int voterID) {
+	private ArrayList<StrategicVotingOption> tryCompromise(int voterID) {
 		char[] truePreference = truePreferenceMatrix[voterID];
 		int oldHappiness = overallHappiness[voterID];
 		ArrayList<StrategicVotingOption> setOfOptions = new ArrayList<StrategicVotingOption>();
-		for (int i = 1; i < numOfCandidates; i++) {
-			for (int j = 0; j < i; j++) {
-
-				char[] newPreference = swap(j, i, truePreference);
-				preferenceMatrix[voterID] = newPreference; // Put new Voting Vector in preference matrix
-				Pair[] newOutcome = calculateVotingOutcome(preferenceMatrix);
-				int[] newHappiness = calculateHappiness(newOutcome[0], truePreferenceMatrix);
-				if (shouldManipulate(truePreference[0], oldOutcome, newOutcome, oldHappiness, newHappiness[voterID])) {
-					String reasoning = reasoningString(truePreference[0], oldOutcome, newOutcome, oldHappiness,
-							newHappiness, voterID, "compromising", i, j);
-					setOfOptions.add(
-							new StrategicVotingOption(newPreference, newOutcome, newHappiness, reasoning, voterID));
+		for (int i = 0; i < numOfCandidates; i++) {
+			int oldFavoritePlace = getIndexOf(oldOutcome, truePreference[i]);
+			for (int j = i; j < numOfCandidates; j++) {
+				int oldOtherPlace = getIndexOf(oldOutcome, truePreference[j]);
+				if (oldOtherPlace < oldFavoritePlace) {
+					for (int k = j; k < numOfCandidates; k++) {
+						char[] newPreference = swap(k, j, truePreference);
+						preferenceMatrix[voterID] = newPreference; // Put new Voting Vector in preference matrix
+						Pair[] newOutcome = calculateVotingOutcome(preferenceMatrix);
+						int[] newHappiness = calculateHappiness(newOutcome[0], truePreferenceMatrix);
+						if (shouldManipulate(truePreference[0], oldOutcome, newOutcome, oldHappiness,
+								newHappiness[voterID])) {
+							String reasoning = reasoningString(truePreference[0], oldOutcome, newOutcome, oldHappiness,
+									newHappiness, voterID, "compromising", j, k);
+							setOfOptions.add(new StrategicVotingOption(newPreference, newOutcome, newHappiness,
+									reasoning, voterID));
+						}
+					}
 				}
 			}
 		}
@@ -180,26 +161,29 @@ public class TVA {
 		return setOfOptions;
 	}
 
-	/*
-	 * 
-	 * PERMUTATION
-	 * 
-	 */
-	public ArrayList<StrategicVotingOption> tryPermutate(int voterID) {
-		char[] truePreference = truePreferenceMatrix[voterID];
-		int oldHappiness = overallHappiness[voterID];
-		ArrayList<StrategicVotingOption> setOfOptions = new ArrayList<StrategicVotingOption>();
-		Permutation permutation = new Permutation(truePreference);
-		ArrayList<char[]> vectorPermutations = permutation.getVectorPermutations();
-		for (char[] newPreference : vectorPermutations) {
-			preferenceMatrix[voterID] = newPreference; // Put new Voting Vector in preference matrix
-			Pair[] newOutcome = calculateVotingOutcome(preferenceMatrix);
-			int[] newHappiness = calculateHappiness(newOutcome[0], truePreferenceMatrix);
-			if (shouldManipulate(truePreference[0], oldOutcome, newOutcome, oldHappiness, newHappiness[voterID]))
-				;
-			setOfOptions.add(new StrategicVotingOption(newPreference, newOutcome, newHappiness, "", voterID));
+	private String reasoningString(char trueFavorite, Pair[] oldOutcome, Pair[] newOutcome, int oldHapp, int[] newHapp,
+			int voterID, String method, int swap1, int swap2) {
+		String reason = "";
+		voterID += 1;
+		if (swap2 != -1) {
+			reason += "When " + method + " " + swap1 + " for " + swap2;
+		} else {
+			reason += "When " + method + " for " + Character.toString(newOutcome[0].option);
 		}
-		return setOfOptions;
+		if (newHapp[voterID - 1] > oldHapp) {
+			if (trueFavorite == newOutcome[0].option) {
+				reason += ", voter #" + voterID + " preferred the new outcome because the true favourite candidate "
+						+ Character.toString(trueFavorite) + " went up to the first place.";
+			} else {
+				reason += ", voter #" + voterID + " preferred the new outcome because another preferred candidate "
+						+ Character.toString(newOutcome[0].option) + " went up to the first place.";
+			}
+		} else {
+			reason += "Using " + method + ", voter #" + voterID
+					+ " did not get more happy, but his true favourite candidate " + Character.toString(trueFavorite)
+					+ " went up at least one position.";
+		}
+		return reason;
 	}
 
 	// Calculating Functions

@@ -18,8 +18,6 @@ public class Permutation {
 		finalMatrix = new ArrayList<char[][]>();
 		char[][] perm = new char[numOfVoters][arrList.get(0).length];
 		permuteVertorsWithRepeats(perm, 0, arrList);
-		printMatrix(finalMatrix);
-
 	}
 
 	public void permuteVertorsWithRepeats(char[][] perm, int pos, ArrayList<char[]> start) {
