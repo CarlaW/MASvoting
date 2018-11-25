@@ -4,9 +4,7 @@ import static util.Helper.transposeMatrix;
 
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 import util.Permutation;
 import view.PopupInput;
@@ -26,30 +24,20 @@ public class Main {
 	}
 
 	private Main() {
-
 		initialize();
+		/*uncomment to run experiments*/
 //		runExperiment();
 //		runExperiment(6, 4, 100);
 	}
 
-	private char[][] getTestMatrix() {
-		char[][] matrix = { { 'C', 'B', 'C', 'B', 'B' }, { 'A', 'D', 'D', 'D', 'C' }, { 'D', 'C', 'A', 'C', 'D' },
-				{ 'B', 'A', 'B', 'A', 'A' } };
-		return matrix;
-
-	}
-
 	private void initialize() {
 		askForSettings();
-//		preferenceMatrix = transposeMatrix(getTestMatrix());
-//		 askForPreferenceMatrix();
-		askForRandomPreferenceMatrix();
+		askForPreferenceMatrix();
+		/*
+		for easier testing, uncomment line below and comment line above to get a random preference matrix instead of manually inputting one
+	 	*/
 
-		JFrame frame = new JFrame("Tactical Voting Analyst");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		JPanel panel = new JPanel();
-
+		//askForRandomPreferenceMatrix();
 		TVA tva = new TVA(votingScheme, preferenceMatrix);
 	}
 
@@ -58,10 +46,17 @@ public class Main {
 		char[] temp = { 'A', 'B', 'C' };
 		int numOfVoters = 5;
 
+		/*create a new Permutation object
+		based on the inital preference vector "temp", all the permutations of this vector are created
+		Using these permutations, all possible matrices with "numOfVoters" voters are created
+		* */
 		Permutation vectorPermutations = new Permutation(temp);
 		Permutation matrixPermutations = new Permutation(vectorPermutations.finalVector, numOfVoters);
 
 		ArrayList<char[][]> testSample = matrixPermutations.getMatrixPermutations();
+		/*
+		create a new instance of the experiment class using the formerly created permutations
+		 */
 		Experiment firstExperiment = new Experiment(testSample);
 
 	}
@@ -81,15 +76,31 @@ public class Main {
 	}
 
 	private void askForSettings() {
+		/*
+		this method creates a popup window asking for three different inputs
+		- voting scheme
+		- number of voters
+		- number ofvting options/candidates
+		 */
 		PopupSettings settings = new PopupSettings();
 		int out = JOptionPane.showConfirmDialog(null, settings, "Enter preferences", JOptionPane.OK_CANCEL_OPTION);
+		/*
+		if input is not confirmed by clicking "OK", close the window and stop the program
+		 */
 		if (out != 0) {
 			System.exit(0);
 		}
 		votingScheme = settings.getVotingScheme().getSelectedIndex();
 		try {
+			/*
+			see if a number is actually entered
+			 */
 			numOfVoters = Integer.parseInt(settings.getVoters().getText());
 			numOfCandidates = Integer.parseInt(settings.getOptions().getText());
+			/*
+			check if the entered numbers are higher than the assignments requirements of 3
+			also check if there are no more candidates than letters in the alphabet
+			 */
 			if (numOfCandidates > 26) {
 				JOptionPane.showMessageDialog(null, "There can be no more than 26 preferences.");
 				askForSettings();
@@ -101,12 +112,18 @@ public class Main {
 				askForSettings();
 			}
 		} catch (NumberFormatException e) {
+			/*
+			if nothing is entered, throw exception
+			 */
 			JOptionPane.showMessageDialog(null, "Please enter a number.");
 			askForSettings();
 		}
 	}
 
 	private void askForPreferenceMatrix() {
+		/*
+		after first inputs are entered, use these to create another popup in which the preference matrix can be entered
+		 */
 		PopupInput input = new PopupInput(numOfVoters, numOfCandidates);
 		int out = JOptionPane.showConfirmDialog(null, input, "Enter preference matrix", JOptionPane.OK_CANCEL_OPTION);
 		if (out != 0) {
@@ -114,10 +131,7 @@ public class Main {
 		}
 		preferenceMatrix = input.getPreferenceMatrix();
 		/*
-		 * for (int i=0; i<noOptions; i++){ for (int j=0; j<noVoters; j++){
-		 * System.out.print("i = " + i + " j = " + j + " ");
-		 * if(preferenceMatrix[i][j].isEmpty()){ System.out.print(" "); }
-		 * System.out.print(preferenceMatrix[i][j] + "   "); } System.out.println(); }
+		check if voters actually adhered to normal voting behaviour
 		 */
 		if (doubleVotePerVoter()) {
 			JOptionPane.showMessageDialog(null, "A voter cannot list the same option twice.");
@@ -131,6 +145,9 @@ public class Main {
 	}
 
 	private boolean doubleVotePerVoter() {
+		/*
+		checks if a voter lists the same option twice in his preference vector
+		 */
 		for (int i = 0; i < numOfVoters; i++) {
 			for (int j = 0; j < numOfCandidates - 1; j++) {
 				if (preferenceMatrix[j][i] == preferenceMatrix[j + 1][i]) {
@@ -145,12 +162,18 @@ public class Main {
 	}
 
 	private char[][] askForRandomPreferenceMatrix() {
+		/*
+		creates a new object of RandomInput, which creates a random preference matrix
+		 */
 		RandomInput input = new RandomInput(numOfVoters, numOfCandidates);
 		preferenceMatrix = input.getRandomPreferenceMatrix();
 		return preferenceMatrix;
 	}
 
 	private boolean noVotesPerVoter() {
+		/*
+		checks if a voter actually entered a true favourite
+		 */
 		for (int i = 0; i < numOfVoters; i++) {
 			if (preferenceMatrix[0][i] == preferenceMatrix[0][i]) {
 				if (preferenceMatrix[0][i] == ' ') {

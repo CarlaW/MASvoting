@@ -55,8 +55,6 @@ public class Experiment {
 		}
 		sb.append("\n");
 
-////		sb.append("STARTING ON RISK");
-//		sb.append("\n");
 
 		for (int j = 0; j < riskPerScheme.length; j++) {
 			for (int i = 0; i < riskPerScheme[j].length; i++) {
@@ -66,8 +64,7 @@ public class Experiment {
 			sb.append("\n");
 		}
 		sb.append("\n");
-//		sb.append("STARTING ON HAPPINESS");
-//		sb.append("\n");
+
 		for (int j = 0; j < happinessPerScheme.length; j++) {
 			for (int i = 0; i < happinessPerScheme[j].length; i++) {
 				sb.append(happinessPerScheme[j][i]);
