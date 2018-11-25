@@ -55,18 +55,20 @@ public class TVA {
 		addVotingOutcomeToMatrix(this.oldOutcome);
 		int[] happiness = calculateHappiness(winner, truePreferenceMatrix);
 		addHappinessToMatrix(happiness);
-//		displayInConsole(votingScheme);
+		displayInConsole(votingScheme);
 	}
 
 	private boolean shouldManipulate(char trueFavorite, Pair[] oldOutcome, Pair[] newOutcome, int oldHappiness,
-			int newHappiness) {
+			int newHappiness, boolean isCompromising) {
 		if (newHappiness > oldHappiness) {
 			return true;
-		} else if (newHappiness == oldHappiness) {
-			int oldPlace = getIndexOf(oldOutcome, trueFavorite);
-			int newPlace = getIndexOf(newOutcome, trueFavorite);
-			if (newPlace < oldPlace) {
-				return true;
+		} else if (!isCompromising){
+			if (newHappiness == oldHappiness) {
+				int oldPlace = getIndexOf(oldOutcome, trueFavorite);
+				int newPlace = getIndexOf(newOutcome, trueFavorite);
+				if (newPlace < oldPlace) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -92,8 +94,8 @@ public class TVA {
 						Pair[] newOutcome = calculateVotingOutcome(preferenceMatrix);
 						int[] newHappiness = calculateHappiness(newOutcome[0], truePreferenceMatrix);
 						if (shouldManipulate(truePreference[0], oldOutcome, newOutcome, oldHappiness,
-								newHappiness[voterID])) {
-							String reasoning = reasoningString(truePreference[0], oldOutcome, newOutcome, oldHappiness,
+								newHappiness[voterID], false)) {
+							String reasoning = reasoningString(truePreference, newOutcome, oldHappiness,
 									newHappiness, voterID, "burying", j, k);
 							setOfOptions.add(new StrategicVotingOption(newPreference, newOutcome, newHappiness,
 									reasoning, voterID));
@@ -126,8 +128,8 @@ public class TVA {
 					preferenceMatrix[voterID] = newPreference; // Put new Voting Vector in preference matrix
 					Pair[] newOutcome = calculateVotingOutcome(preferenceMatrix);
 					int[] newHappiness = calculateHappiness(newOutcome[0], truePreferenceMatrix);
-					if (newHappiness[voterID] > oldHappiness) {
-						String reasoning = reasoningString(truePreference[0], oldOutcome, newOutcome, oldHappiness,
+					if (shouldManipulate(truePreference[0], oldOutcome, newOutcome, oldHappiness, newHappiness[voterID], true)) {
+						String reasoning = reasoningString(truePreference, newOutcome, oldHappiness,
 								newHappiness, voterID, "compromising", i, j);
 						setOfOptions.add(
 								new StrategicVotingOption(newPreference, newOutcome, newHappiness, reasoning, voterID));
@@ -153,8 +155,8 @@ public class TVA {
 			preferenceMatrix[voterID] = newPreference; // Put new Voting Vector in preference matrix
 			Pair[] newOutcome = calculateVotingOutcome(preferenceMatrix);
 			int[] newHappiness = calculateHappiness(newOutcome[0], truePreferenceMatrix);
-			if (shouldManipulate(truePreference[0], oldOutcome, newOutcome, oldHappiness, newHappiness[voterID])) {
-				String reasoning = reasoningString(truePreference[0], oldOutcome, newOutcome, oldHappiness,
+			if (shouldManipulate(truePreference[0], oldOutcome, newOutcome, oldHappiness, newHappiness[voterID], false)) {
+				String reasoning = reasoningString(truePreference, newOutcome, oldHappiness,
 						newHappiness, voterID, "bullet voting", i, -1);
 				setOfOptions
 						.add(new StrategicVotingOption(newPreference, newOutcome, newHappiness, reasoning, voterID));
@@ -164,12 +166,13 @@ public class TVA {
 		return setOfOptions;
 	}
 
-	private String reasoningString(char trueFavorite, Pair[] oldOutcome, Pair[] newOutcome, int oldHapp, int[] newHapp,
+	private String reasoningString(char[] truePreference, Pair[] newOutcome, int oldHapp, int[] newHapp,
 			int voterID, String method, int swap1, int swap2) {
 		String reason = "";
+		char trueFavorite = truePreference[0];
 		voterID += 1;
 		if (swap2 != -1) {
-			reason += "When " + method + " " + swap1 + " for " + swap2;
+			reason += "When " + method + " " + truePreference[swap1] + " for " + truePreference[swap2];
 		} else {
 			reason += "When " + method + " for " + Character.toString(newOutcome[0].option);
 		}
@@ -182,7 +185,7 @@ public class TVA {
 						+ Character.toString(newOutcome[0].option) + " went up to the first place.";
 			}
 		} else {
-			reason += "Using " + method + ", voter #" + voterID
+			reason += ", voter #" + voterID
 					+ " did not get more happy, but his true favourite candidate " + Character.toString(trueFavorite)
 					+ " went up at least one position.";
 		}
