@@ -144,7 +144,7 @@ public class TVA {
 			int oldFavoritePlace = getIndexOf(oldOutcome, truePreference[i]);
 			for (int j = i + 1; j < numOfCandidates; j++) {
 				int oldOtherPlace = getIndexOf(oldOutcome, truePreference[j]);
-				if (oldFavoritePlace < oldOtherPlace) {
+				if (oldFavoritePlace > oldOtherPlace) {
 					char[] newPreference = swap(j, i, truePreference);
 					preferenceMatrix[voterID] = newPreference; // Put new Voting Vector in preference matrix
 					Pair[] newOutcome = calculateVotingOutcome(preferenceMatrix);
